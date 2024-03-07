@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tests
+namespace SafeSkate
 {
-    internal class Class3
+    internal class Class2
     {
     }
 }
