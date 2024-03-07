@@ -6,22 +6,32 @@ using System.Threading.Tasks;
 
 namespace Tests
 {
-    class Class2
+    class VerifyLocation
     {
-        static bool Main(string[] args)
+        static bool testVerifyLocation(Coordinate c1)
         {
-            def testVerifyLocation(coordinate c1)
+            if (isDuplicateCoord(c1) == false)
             {
-                if (isDuplicateCoord(c1) == false​)
-                {
-                    if (isStreet(c1) == true)
-                        return true;
-                    else if (isNearStreet(c1) == true​)
-                        return true​;
-                    else return false​;
-                }
+                if (isStreet(c1) == true)
+                    return true;
+                else if (isNearStreet(c1) == true)
+                    return true;
                 else return false;
             }
+            else return false;
+        }
+
+        static bool isDuplicateCoord(Coordinate c1)
+        {
+            return false;
+        }
+        static bool isStreet(Coordinate c1)
+        {
+            return true;
+        }
+        static bool isNearStreet(Coordinate c1)
+        {
+            return true;
         }
     }
 }
