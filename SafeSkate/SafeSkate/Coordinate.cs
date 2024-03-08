@@ -9,7 +9,7 @@ namespace SafeSkate
     public class Coordinate
     {
         double x, y, z;
-
+        public Coordinate() { }
         public Coordinate(double x, double y, double z)
         {
             this.x = x;
