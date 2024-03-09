@@ -19,10 +19,10 @@ namespace Tests
             // adding safe skate types.
             this.Container.AddExtension(new SafeSkateContainerExtension());
 
-            // getting all the classes in this namespace that implement ITest
+            // getting all the classes in this assembly that implement ITest
             var testTypes = Assembly.GetExecutingAssembly()
              .GetTypes()
-             .Where(t => t.IsClass && !t.IsAbstract && typeof(ITest).IsAssignableFrom(t) && t.Namespace == "Tests");
+             .Where(t => t.IsClass && !t.IsAbstract && typeof(ITest).IsAssignableFrom(t));
 
             // regestering each test by name. can register more complext texts by hand.
             foreach (var type in testTypes)

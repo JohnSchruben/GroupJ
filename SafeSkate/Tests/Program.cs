@@ -13,7 +13,7 @@ namespace Tests
             IUnityContainer container = new UnityContainer();
             container.AddExtension(new TestContainerExtension());
 
-            // resolve any class implementing ITest
+            // create all tests
             var tests = container.ResolveAll<ITest>();
 
             // run each test
@@ -22,8 +22,6 @@ namespace Tests
                 // print test result
                 Console.WriteLine(test.RunTest());
             }
-
-            Console.ReadKey();
         }
     }
 }
