@@ -10,8 +10,7 @@ namespace Tests
 {
    
     class VerifyLocation
-    {
-        
+    { 
 
         static bool testVerifyLocation(Coordinate c1)
         {
@@ -28,15 +27,15 @@ namespace Tests
 
         static bool isDuplicateCoord(Coordinate c1)
         {
-            return false;
+            return false; //Checks current coordinate with list of other coordinates. Returns true if a duplicate is found
         }
         static bool isStreet(Coordinate c1)
         {
-            return true;
+            return true; //Checks if the current coordinate is on a street object on the global map. Returns true if the coordinate is on a street
         }
         static bool isNearStreet(Coordinate c1)
         {
-            return true;
+            return true; //Checks if the current coordinate is within a certain distance from a street object on the global map. Returns true if the coordinate is near a street
         }
     }
 }
