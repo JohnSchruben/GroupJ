@@ -6,33 +6,43 @@ using System.Threading.Tasks;
 
 namespace SafeSkate
 {
-    public class Coordinate
+    public class Coordinate : IEquatable<Coordinate>
     {
-        double x, y, z;
+        double latitude, longitude, elevation;
         public Coordinate() { }
-        public Coordinate(double x, double y, double z)
+        public Coordinate(double latitude, double longitude, double elevation)
         {
-            this.x = x;
-            this.y = y;
-            this.z = z;
+            this.latitude = latitude;
+            this.longitude = longitude;
+            this.elevation = elevation;
         }
 
-        public double X
+        public double Latitude
         {
-            get { return x; }
-            set { x = value; }
+            get { return latitude; }
+            set { latitude = value; }
         }
-        public double Y
+        public double Longitude
         {
-            get { return y; }
-            set { y = value; }
+            get { return longitude; }
+            set { longitude = value; }
         }
-        public double Z
+        public double Elevation
         {
-            get { return z; }
-            set { z = value; }
+            get { return elevation; }
+            set { elevation = value; }
         }
 
+        public bool Equals(Coordinate? other)
+        {
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
 
+            return this.Latitude == other.Latitude &&
+                this.Longitude == other.Longitude &&
+                this.Elevation == other.Elevation;
+        }
     }
 }
