@@ -52,10 +52,12 @@ namespace Tests
             string baseDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             string serviceExecutablePath = Path.Combine(baseDirectory, "SafeSkate.Service.exe");
 
+            string arguments = $"localhost 9000 9001";
+
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
                 FileName = serviceExecutablePath,
-                Arguments = "",
+                Arguments = arguments,
                 UseShellExecute = false,
                 CreateNoWindow = true,
                 RedirectStandardOutput = true,

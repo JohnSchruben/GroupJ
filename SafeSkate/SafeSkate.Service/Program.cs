@@ -12,22 +12,30 @@ using System.Threading.Tasks;
 class Program
 {
 
+    private static ConcurrentBag<TcpClient> updateClients = new ConcurrentBag<TcpClient>();
     static async Task Main(string[] args)
     {
-        // Configure the ServiceTypeProvider with server details if needed
-        ServiceTypeProvider.ServerIp = "localhost";
-        ServiceTypeProvider.UpdatePort = 9000;
-        ServiceTypeProvider.QueryPort = 9001;
+        // Defaults
+        string defaultIp = "localhost";
+        int defaultUpdatePort = 9000;
+        int defaultQueryPort = 9001;
 
-        // default map marker list
-        ServiceTypeProvider.DefaultMapMarkerInfos = new List<MapMarkerInfo>()
+        // Configure the ServiceTypeProvider with server details based on input args or use defaults
+        ServiceTypeProvider.ServerIp = args.Length > 0 ? args[0] : defaultIp;
+        ServiceTypeProvider.UpdatePort = args.Length > 1 && int.TryParse(args[1], out int updatePort) ? updatePort : defaultUpdatePort;
+        ServiceTypeProvider.QueryPort = args.Length > 2 && int.TryParse(args[2], out int queryPort) ? queryPort : defaultQueryPort;
+
+        // Default map marker list. Will turn into a file read or a database.
+        ServiceTypeProvider.DefaultMapMarkerInfos = new List<MapMarkerInfo>
         {
-            new MapMarkerInfo(new Coordinate(), "server", DateTime.Now, Severity.High) 
-        };  
+            new MapMarkerInfo(new Coordinate(), "server", DateTime.Now, Severity.High)
+        };
 
+        // Start server tasks
         Task updateServerTask = RunUpdateServerAsync(ServiceTypeProvider.UpdatePort);
         Task queryServerTask = RunQueryServerAsync(ServiceTypeProvider.QueryPort);
 
+        // Await tasks
         await Task.WhenAll(updateServerTask, queryServerTask);
     }
 
@@ -56,7 +64,6 @@ class Program
             _ = HandleQueryClientAsync(client);
         }
     }
-    private static ConcurrentBag<TcpClient> updateClients = new ConcurrentBag<TcpClient>();
 
     static async Task HandleUpdateClientAsync(TcpClient client)
     {
@@ -91,7 +98,6 @@ class Program
         }
     }
 
-    // When broadcasting updates:
     public static void BroadcastUpdate(MapMarkerUpdateMessage updatedMarkerInfo)
     {
         foreach (var client in updateClients)
@@ -107,7 +113,6 @@ class Program
             catch (Exception ex)
             {
                 Console.WriteLine($"Error broadcasting update: {ex.Message}");
-                // Handle disconnected clients
             }
         }
     }

@@ -18,7 +18,7 @@ namespace Tests
         public string RunTest()
         {
             // check something 
-            return $"the test was inconclusive...X:{coordinate.Latitude},Y:{coordinate.Longitude}";
+            return $"the example test was inconclusive...";
         }
     }
 }
