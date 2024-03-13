@@ -19,35 +19,34 @@ namespace SafeSkate
         public ObservableCollection<MapMarkerInfo> MapMarkerInfos => this.mapMarkerInfos;
 
 
-        protected void AddMapMarkerInfo(MapMarkerInfo mapMarkerInfo)
+        public bool AddMapMarkerInfo(MapMarkerInfo mapMarkerInfo)
         {
             // don't add if it's null
             if (mapMarkerInfo == null)
             {
-                return;
+                return false;
             }
 
             // don't add if it's a duplicate
             if (!mapMarkerInfos.Any(x => x.Equals(mapMarkerInfo)))
             {
                 mapMarkerInfos.Add(mapMarkerInfo);
+                return true;
             }
+
+            return false;
         }
 
-        protected void RemoveMapMarkerInfo(MapMarkerInfo mapMarkerInfo)
+        public bool RemoveMapMarkerInfo(MapMarkerInfo mapMarkerInfo)
         {
-            // don't remove if it's null
-            if (mapMarkerInfo == null)
-            {
-                return;
-            }
-
             // try to remove the marker.
             var deadMarker = mapMarkerInfos.FirstOrDefault(x => x.Equals(mapMarkerInfo));
             if (deadMarker != null)
             {
-                mapMarkerInfos.Remove(deadMarker);
+                return mapMarkerInfos.Remove(deadMarker);
             }
+
+            return false;
         }
     }
 }
