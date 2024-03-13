@@ -5,7 +5,9 @@ VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{721FBE6C-2115-46BA-A7A4-8458D36E0336}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SafeSkate", "SafeSkate\SafeSkate.csproj", "{C50ECD0A-02A1-4DA3-8477-2CAF5BDF62A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SafeSkate", "SafeSkate\SafeSkate.csproj", "{C50ECD0A-02A1-4DA3-8477-2CAF5BDF62A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SafeSkate.Service", "SafeSkate.Service\SafeSkate.Service.csproj", "{18DF1A10-2013-435A-BAC1-FDE969E73C80}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{C50ECD0A-02A1-4DA3-8477-2CAF5BDF62A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C50ECD0A-02A1-4DA3-8477-2CAF5BDF62A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C50ECD0A-02A1-4DA3-8477-2CAF5BDF62A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18DF1A10-2013-435A-BAC1-FDE969E73C80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18DF1A10-2013-435A-BAC1-FDE969E73C80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18DF1A10-2013-435A-BAC1-FDE969E73C80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18DF1A10-2013-435A-BAC1-FDE969E73C80}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

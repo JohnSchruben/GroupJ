@@ -19,6 +19,9 @@ namespace Tests
             // adding safe skate types.
             this.Container.AddExtension(new SafeSkateContainerExtension());
 
+            // add the service types.
+            this.Container.AddExtension(new ServiceContainerExtension("localhost", 9000, 9001));
+
             // getting all the classes in this assembly that implement ITest
             var testTypes = Assembly.GetExecutingAssembly()
              .GetTypes()

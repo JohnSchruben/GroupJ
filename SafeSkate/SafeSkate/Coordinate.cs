@@ -22,11 +22,13 @@ namespace SafeSkate
             get { return latitude; }
             set { latitude = value; }
         }
+
         public double Longitude
         {
             get { return longitude; }
             set { longitude = value; }
         }
+
         public double Elevation
         {
             get { return elevation; }

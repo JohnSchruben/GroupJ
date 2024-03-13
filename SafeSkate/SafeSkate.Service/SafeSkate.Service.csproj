@@ -1,18 +1,13 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <OutputType>Exe</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Unity" Version="5.11.10" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\SafeSkate.Service\SafeSkate.Service.csproj" />
     <ProjectReference Include="..\SafeSkate\SafeSkate.csproj" />
   </ItemGroup>
 

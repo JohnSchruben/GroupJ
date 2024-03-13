@@ -1,19 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Collections;
+using System.IO;
+using System.Net.Sockets;
 using System.Text;
+using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SafeSkate
 {
-    using System;
-    using System.Collections;
-    using System.IO;
-    using System.Net.Sockets;
-    using System.Text;
-    using System.Text.Json;
-    using System.Threading;
-    using System.Threading.Tasks;
 
     public class ServiceClient
     {
@@ -38,22 +33,24 @@ namespace SafeSkate
         {
             try
             {
-                using var stream = queryClient.GetStream();
+                using var stream = updateClient.GetStream();
                 var writer = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
-                var reader = new StreamReader(stream, Encoding.UTF8);
 
                 // Send the query to the server
                 await writer.WriteLineAsync(JsonSerializer.Serialize(message));
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while querying markers: {ex.Message}");
+                Console.WriteLine($"An error occurred while publishing an update: {ex.Message}");
             }
         }
 
         public async Task<List<MapMarkerInfo>> QueryMarkersAsync(string query)
         {
+            // Ensure to connect to the correct port, which is queryPort for queries.
+            await queryClient.ConnectAsync(serverIp, queryPort);
             List<MapMarkerInfo> markers = new List<MapMarkerInfo>();
+
             if (!queryClient.Connected)
             {
                 Console.WriteLine("Client is not connected.");
@@ -63,17 +60,13 @@ namespace SafeSkate
             try
             {
                 using var stream = queryClient.GetStream();
-                var writer = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
                 var reader = new StreamReader(stream, Encoding.UTF8);
 
-                // Send the query to the server
-                await writer.WriteLineAsync(query);
-
-                // Wait for the server's response
+                // Wait for the server's response.
                 var response = await reader.ReadLineAsync();
                 if (response != null)
                 {
-                    // Deserialize the response back into a list of MapMarkerInfo objects
+                    // Deserialize the response back into a list of MapMarkerInfo objects.
                     markers = JsonSerializer.Deserialize<List<MapMarkerInfo>>(response);
                 }
             }
@@ -81,16 +74,21 @@ namespace SafeSkate
             {
                 Console.WriteLine($"An error occurred while querying markers: {ex.Message}");
             }
+            finally
+            {
+                queryClient.Close();
+            }
 
             return markers;
         }
+
         public async Task StartAsync()
         {
             try
             {
                 await updateClient.ConnectAsync(serverIp, updatePort);
                 Console.WriteLine("Connected to the server.");
-                await ListenForUpdatesAsync(cancellationTokenSource.Token);
+                ListenForUpdatesAsync(cancellationTokenSource.Token);
             }
             catch (Exception ex)
             {
@@ -128,9 +126,13 @@ namespace SafeSkate
             {
                 Console.WriteLine("Listening for updates was canceled.");
             }
+            catch (SocketException)
+            {
+                Console.WriteLine($"Client Disconnected");
+            }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while listening for updates: {ex.Message}");
+                Console.WriteLine(ex);
             }
         }
 
