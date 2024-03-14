@@ -127,7 +127,7 @@ class Program
             var stream = client.GetStream();
             var writer = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
 
-            // Automatically send all markers upon client connection
+            // send all markers upon client connection
             var markers = ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.MapMarkerInfos;
 
             var xml = SafeSkateSerializer.SerializeMapMarkerInfoList(markers.ToList());
