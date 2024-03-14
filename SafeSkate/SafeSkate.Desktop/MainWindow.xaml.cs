@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace SafeSkate.Desktop
 {
@@ -18,13 +19,14 @@ namespace SafeSkate.Desktop
     {
         public MainWindow()
         {
-            //ServiceTypeProvider.ServerIp = "safeskate2.eastus.cloudapp.azure.com";
-            ServiceTypeProvider.ServerIp =  "20.83.148.72";
-            ServiceTypeProvider.UpdatePort = 9000;
-            ServiceTypeProvider.QueryPort = 9001;
             InitializeComponent();
-            var test = ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy;
-            Console.WriteLine(test.MapMarkerInfos);
+            //this.Loaded += async (sender, e) => await Window_LoadedAsync(sender, e);
+        }
+
+        private async Task Window_LoadedAsync(object sender, RoutedEventArgs e)
+        {
+            //await ViewModelLocator.Instance.InitializeAsync();
+            DataContext = ViewModelLocator.Instance.MainWindowViewModel;
         }
     }
 }

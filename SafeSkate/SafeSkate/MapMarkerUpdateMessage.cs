@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace SafeSkate
 {
+    [Serializable]
     public class MapMarkerUpdateMessage
     {
         public bool IsAdded { get; set; }

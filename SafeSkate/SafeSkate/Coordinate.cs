@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace SafeSkate
 {
+    [Serializable]
     public class Coordinate : IEquatable<Coordinate>
     {
         double latitude, longitude, elevation;
@@ -45,6 +46,11 @@ namespace SafeSkate
             return this.Latitude == other.Latitude &&
                 this.Longitude == other.Longitude &&
                 this.Elevation == other.Elevation;
+        }
+
+        public override string ToString()
+        {
+            return $"Latitude: {this.Latitude}\nLongitude: {this.Longitude}";
         }
     }
 }

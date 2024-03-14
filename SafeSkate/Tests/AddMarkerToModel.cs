@@ -18,7 +18,7 @@ namespace Tests
         }
         public string RunTest()
         {
-            model.AddMapMarkerInfo(new MapMarkerInfo());
+            model.AddMapMarkerInfo(new MapMarkerInfo(new Coordinate(40.7128, -74.0060, 10), "test class", DateTime.Now, Severity.Morphine));
 
             // count should be one more than default.
             if (model.MapMarkerInfos.Count > 1)

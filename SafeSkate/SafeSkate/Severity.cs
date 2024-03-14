@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace SafeSkate
 {
+    [Serializable]
     public enum Severity
     {
         FlintstonesVitamin,

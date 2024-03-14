@@ -3,7 +3,6 @@ using System.Collections;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -35,9 +34,9 @@ namespace SafeSkate
             {
                 using var stream = updateClient.GetStream();
                 var writer = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
-
+                
                 // Send the query to the server
-                await writer.WriteLineAsync(JsonSerializer.Serialize(message));
+                await writer.WriteLineAsync(SafeSkateSerializer.SerializeMapMarkerUpdateMessage(message));
             }
             catch (Exception ex)
             {
@@ -62,11 +61,11 @@ namespace SafeSkate
                 var reader = new StreamReader(stream, Encoding.UTF8);
 
                 // Wait for the server's response.
-                var response = await reader.ReadLineAsync();
+                var response = await reader.ReadToEndAsync();
                 if (response != null)
                 {
                     // Deserialize the response back into a list of MapMarkerInfo objects.
-                    markers = JsonSerializer.Deserialize<List<MapMarkerInfo>>(response);
+                    markers = SafeSkateSerializer.DeserializeMapMarkerInfoList(response);
                 }
             }
             catch (Exception ex)
@@ -111,7 +110,7 @@ namespace SafeSkate
                         if (message != null)
                         {
                             Console.WriteLine($"Received update: {message}");
-                            var markerInfo = JsonSerializer.Deserialize<MapMarkerUpdateMessage>(message);
+                            var markerInfo = SafeSkateSerializer.DeserializeMapMarkerUpdateMessage(message);
                             this.MapMarkerUpdateReceived?.Invoke(markerInfo);
                         }
                     }

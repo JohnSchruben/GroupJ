@@ -28,8 +28,10 @@ class Program
         // Default map marker list. Will turn into a file read or a database.
         ServiceTypeProvider.DefaultMapMarkerInfos = new List<MapMarkerInfo>
         {
-            new MapMarkerInfo(new Coordinate(), "server", DateTime.Now, Severity.Morphine)
+             new MapMarkerInfo(new Coordinate(40.7128, -74.0060, 10), "server", DateTime.Now, Severity.Morphine)
         };
+
+        Console.WriteLine($"starting service host on {ServiceTypeProvider.ServerIp}");
 
         // Start server tasks
         Task updateServerTask = RunUpdateServerAsync(ServiceTypeProvider.UpdatePort);
@@ -71,9 +73,10 @@ class Program
         {
             var stream = client.GetStream();
             var reader = new StreamReader(stream, Encoding.UTF8);
-            var json = await reader.ReadToEndAsync();
-            var message = JsonSerializer.Deserialize<MapMarkerUpdateMessage>(json);
+            var xml = await reader.ReadToEndAsync();
+            var message = SafeSkateSerializer.DeserializeMapMarkerUpdateMessage(xml);
 
+            Console.WriteLine($"HandleUpdateClientAsync:{xml}");
             if (message.IsAdded)
             {
                 ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.AddMapMarkerInfo(message.Info);
@@ -87,7 +90,7 @@ class Program
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error handling update client: {ex.Message}");
+            Console.WriteLine($"Error handling update client: {ex.Message} {ex.StackTrace}");
         }
         finally
         {
@@ -106,9 +109,9 @@ class Program
             {
                 var stream = client.GetStream();
                 var writer = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
-                var json = JsonSerializer.Serialize(updatedMarkerInfo);
+                var xml = SafeSkateSerializer.SerializeMapMarkerUpdateMessage(updatedMarkerInfo);
 
-                writer.WriteLine(json);
+                writer.WriteLine(xml);
             }
             catch (Exception ex)
             {
@@ -126,9 +129,10 @@ class Program
 
             // Automatically send all markers upon client connection
             var markers = ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.MapMarkerInfos;
-            var json = JsonSerializer.Serialize(markers);
 
-            await writer.WriteAsync(json + Environment.NewLine); 
+            var xml = SafeSkateSerializer.SerializeMapMarkerInfoList(markers.ToList());
+
+            await writer.WriteAsync(xml + Environment.NewLine); 
             Console.WriteLine("Markers sent to query client.");
         }
         catch (Exception ex)

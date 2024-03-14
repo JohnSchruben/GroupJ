@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Xml.Serialization;
+using System.Xml;
 using Unity;
 
 namespace Tests

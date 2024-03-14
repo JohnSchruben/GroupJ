@@ -5,6 +5,7 @@ using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace SafeSkate
 {
@@ -13,6 +14,10 @@ namespace SafeSkate
         private static ServiceTypeProvider instance;
         public static ServiceTypeProvider Instance => instance ?? (instance = new ServiceTypeProvider());   
         public static IEnumerable<MapMarkerInfo> DefaultMapMarkerInfos { get; set; }
+
+        public ServiceTypeProvider() 
+        { 
+        }    
 
         // Lazy initialization for MapMarkerInfoProxy using the factory method
         private readonly Lazy<MapMarkerInfoCollectionProxy> mapMarkerInfoProxy =
@@ -34,6 +39,7 @@ namespace SafeSkate
 
             var serviceClient = new ServiceClient(ServerIp, UpdatePort, QueryPort);
             var mapMarkers = new List<MapMarkerInfo>();
+           
             await serviceClient.StartAsync();
 
             if (DefaultMapMarkerInfos == null)
