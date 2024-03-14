@@ -18,17 +18,10 @@ namespace SafeSkate
 
         public ObservableCollection<MapMarkerInfo> MapMarkerInfos => this.mapMarkerInfos;
 
-
         public bool AddMapMarkerInfo(MapMarkerInfo mapMarkerInfo)
         {
-            // don't add if it's null
-            if (mapMarkerInfo == null)
-            {
-                return false;
-            }
-
-            // don't add if it's a duplicate
-            if (!mapMarkerInfos.Any(x => x.Equals(mapMarkerInfo)))
+            // don't add if it's a duplicate or if its null
+            if (mapMarkerInfo != null && !mapMarkerInfos.Any(x => x.Equals(mapMarkerInfo)))
             {
                 mapMarkerInfos.Add(mapMarkerInfo);
                 return true;

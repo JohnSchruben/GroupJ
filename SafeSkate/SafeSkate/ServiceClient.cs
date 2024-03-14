@@ -53,8 +53,7 @@ namespace SafeSkate
 
             if (!queryClient.Connected)
             {
-                Console.WriteLine("Client is not connected.");
-                return markers;
+                throw new Exception();
             }
 
             try
@@ -92,7 +91,7 @@ namespace SafeSkate
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Could not connect to the server: {ex.Message}");
+                throw ex;
             }
         }
 

@@ -28,7 +28,7 @@ class Program
         // Default map marker list. Will turn into a file read or a database.
         ServiceTypeProvider.DefaultMapMarkerInfos = new List<MapMarkerInfo>
         {
-            new MapMarkerInfo(new Coordinate(), "server", DateTime.Now, Severity.High)
+            new MapMarkerInfo(new Coordinate(), "server", DateTime.Now, Severity.Morphine)
         };
 
         // Start server tasks
@@ -128,7 +128,7 @@ class Program
             var markers = ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.MapMarkerInfos;
             var json = JsonSerializer.Serialize(markers);
 
-            await writer.WriteAsync(json + Environment.NewLine); // Ensure newline for client-side reading
+            await writer.WriteAsync(json + Environment.NewLine); 
             Console.WriteLine("Markers sent to query client.");
         }
         catch (Exception ex)

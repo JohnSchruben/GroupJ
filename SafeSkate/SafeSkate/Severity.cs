@@ -8,9 +8,9 @@ namespace SafeSkate
 {
     public enum Severity
     {
-        Low,
-        Medium,
-        High,
-        TheatOfDeath,
+        FlintstonesVitamin,
+        BabyAspirin,
+        Morphine,
+        ThePersonDied,
     }
 }

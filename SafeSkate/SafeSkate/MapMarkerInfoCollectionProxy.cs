@@ -17,6 +17,7 @@ namespace SafeSkate
             this.serviceClient = serviceClient;
             this.serviceClient.MapMarkerUpdateReceived += this.ServiceClient_MapMarkerUpdateReceived;
         }
+
         public ObservableCollection<MapMarkerInfo> MapMarkerInfos => this.model.MapMarkerInfos;  
 
         public void AddMapMarkerInfo(MapMarkerInfo mapMarkerInfo)
@@ -34,6 +35,7 @@ namespace SafeSkate
                 this.serviceClient.PublishMapMarkerUpdate(message);
             }
         }
+
         public void RemoveMapMarkerInfo(MapMarkerInfo mapMarkerInfo)
         {
             // check if the model updated.

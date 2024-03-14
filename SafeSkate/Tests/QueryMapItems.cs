@@ -16,6 +16,7 @@ namespace Tests
         {
             this.model = model;
         }
+
         public string RunTest()
         {
             var mapItems = this.model.MapMarkerInfos;
