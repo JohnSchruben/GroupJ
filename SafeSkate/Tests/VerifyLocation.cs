@@ -9,8 +9,13 @@ using SafeSkate;
 namespace Tests
 {
    
-    class VerifyLocation
-    { 
+    public class VerifyLocation : ITest
+    {
+        private Coordinate coordinate;
+        public VerifyLocation(Coordinate coordinate)
+        {
+            this.coordinate = coordinate;
+        }
 
         static bool testVerifyLocation(Coordinate c1)
         {
@@ -25,6 +30,15 @@ namespace Tests
             else return false;
         }
 
+        public string RunTest()
+        {
+            if (testVerifyLocation(coordinate))
+                return "Verify Location test passed.";
+            else
+                return "Verify Location test failed.";
+        }
+
+        //These methods should probably be in the actual program, not the test method
         static bool isDuplicateCoord(Coordinate c1)
         {
             return false; //Checks current coordinate with list of other coordinates. Returns true if a duplicate is found
