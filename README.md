@@ -8,3 +8,4 @@ Create branches based on your sprint tasks and name them accordingly. Only edit 
 If your task depends on other modules outside of your branch domain, communicate with the team member for that module and work out a solution. 
 Commit changes frequently and merge branches infrequently. 
 When merging, open a pull request in git, link your branch with the pull request, and merge it into master. 
+test
