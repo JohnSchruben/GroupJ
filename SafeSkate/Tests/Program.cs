@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Xml.Serialization;
 using System.Xml;
 using Unity;
+using System.Runtime.InteropServices;
 
 namespace Tests
 {
@@ -52,7 +53,14 @@ namespace Tests
         private static void StartServce()
         {
             string baseDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            string serviceExecutablePath = Path.Combine(baseDirectory, "SafeSkate.Service.exe");
+
+            string extension = ".exe";
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                extension = ".dll";
+            }
+
+            string serviceExecutablePath = Path.Combine(baseDirectory, string.Format("SafeSkate.Service{0}", extension));
 
             string arguments = $"localhost 9000 9001";
 

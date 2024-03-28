@@ -14,6 +14,13 @@ internal class Program
             Console.WriteLine(marker);
         }
 
+        test2.AddMapMarkerInfo(new MapMarkerInfo() { Location = new Coordinate() });
+        
+        foreach (var marker in test2.MapMarkerInfos)
+        {
+            Console.WriteLine(marker);
+        }
+
         Console.ReadKey();
         return;
     }
