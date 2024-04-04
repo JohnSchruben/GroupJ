@@ -45,7 +45,7 @@ namespace SafeSkate
 
         public static MapMarkerUpdateMessage DeserializeMapMarkerUpdateMessage(string xml)
         {
-            Console.WriteLine("DeserializeMapMarkerUpdateMessage);
+            Console.WriteLine("DeserializeMapMarkerUpdateMessage");
             Console.WriteLine(xml);
             var serializer = new XmlSerializer(typeof(MapMarkerUpdateMessage));
             using (var stringReader = new StringReader(xml))

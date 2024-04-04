@@ -74,8 +74,14 @@ class Program
     {
         try
         {
-
             var stream = client.GetStream();
+
+            // Wait until data is available
+            while (!stream.DataAvailable)
+            {
+                await Task.Delay(100); 
+            }
+
             var reader = new StreamReader(stream, Encoding.UTF8);
             var xml = await reader.ReadToEndAsync();
 

@@ -39,7 +39,7 @@ namespace SafeSkate
                 await updateClient.ConnectAsync(serverIp, updatePort);
                 if (!this.updateClient.Connected)
                 {
-                    throw new Exception();
+                    return;
                 }
                 Console.WriteLine("Connected to the server.");
                 this.stream = updateClient.GetStream();

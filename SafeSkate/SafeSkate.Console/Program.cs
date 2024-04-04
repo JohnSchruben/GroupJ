@@ -16,9 +16,8 @@ internal class Program
         }
         while(true)
         {
-            test2.AddMapMarkerInfo(new MapMarkerInfo(new Coordinate(40.7128, -74.0060, 10), "console client", DateTime.Now, Severity.Morphine));
-
             Console.ReadKey();
+            test2.AddMapMarkerInfo(new MapMarkerInfo(new Coordinate(40.7128, -74.0060, 10), "console client", DateTime.Now, Severity.Morphine));
         }
     }
 
