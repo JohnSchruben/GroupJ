@@ -9,7 +9,6 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace SafeSkate
 {
-
     public class ServiceClient
     {
         private readonly string serverIp;
@@ -28,7 +27,7 @@ namespace SafeSkate
             this.updatePort = updatePort;
             this.queryPort = queryPort;
             this.updateClient = new TcpClient();
-            this.queryClient = new TcpClient(); 
+            this.queryClient = new TcpClient();
         }
 
         public async void PublishMapMarkerUpdate(MapMarkerUpdateMessage message)
@@ -40,11 +39,6 @@ namespace SafeSkate
                     await updateClient.ConnectAsync(serverIp, updatePort);
                 }
 
-                Console.WriteLine("Connected to the server.");
-                //var stream = updateClient.GetStream();
-                //var reader = new StreamReader(stream, Encoding.UTF8);
-
-                ////using var stream = updateClient.GetStream();
                 var writer = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
 
                 // Send the query to the server
@@ -54,10 +48,6 @@ namespace SafeSkate
             catch (Exception ex)
             {
                 Console.WriteLine($"An error occurred while publishing an update: {ex.Message}");
-            }
-            finally
-            {
-                //client.Dispose();
             }
         }
 
@@ -103,11 +93,11 @@ namespace SafeSkate
         }
 
         public event Action<MapMarkerUpdateMessage> MapMarkerUpdateReceived;
+
         private async Task ListenForUpdatesAsync()
         {
             try
             {
-
                 while (true)
                 {
                     if (!updateClient.Connected)
@@ -115,15 +105,13 @@ namespace SafeSkate
                         this.updateClient = new TcpClient();
                         await updateClient.ConnectAsync(serverIp, updatePort);
                         Console.WriteLine("Connected to the server.");
-                        this.stream = updateClient.GetStream(); 
-              
-
+                        this.stream = updateClient.GetStream();
                     }
 
                     if (stream.DataAvailable)
                     {
                         this.reader = new StreamReader(stream, Encoding.UTF8);
-                        int bufferSize = 4096;  
+                        int bufferSize = 4096;
                         char[] buffer = new char[bufferSize];
 
                         int bytesRead;
@@ -131,11 +119,8 @@ namespace SafeSkate
                         {
                             string receivedData = new string(buffer, 0, bytesRead);
                             Console.WriteLine($"Received data: {receivedData}");
-
-                            Console.WriteLine($"Received update: {receivedData}");
                             var markerInfo = SafeSkateSerializer.DeserializeMapMarkerUpdateMessage(receivedData);
                             this.MapMarkerUpdateReceived?.Invoke(markerInfo);
-                           
                         }
                     }
                     else

@@ -1,31 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net.Sockets;
 
 namespace SafeSkate.Service
 {
     internal class ClientNode
     {
-        public TcpClient tclient;
+        public TcpClient TcpClient;
         public byte[] Tx, Rx;
-        public string strId;
-        public string strName;
+        public string Address;
 
-        public ClientNode(TcpClient _tclient, byte[] _tx, byte[] _rx, string _str, string _name)
+        public ClientNode(TcpClient tcpClient, byte[] tx, byte[] rx, string address)
         {
-            tclient = _tclient;
-            Tx = _tx;
-            Rx = _rx;
-            strId = _str;
-            strName = _name;
+            TcpClient = tcpClient;
+            Tx = tx;
+            Rx = rx;
+            Address = address;
         }
 
         public string ToStrng()
         {
-            return strName;
+            return Address;
         }
     }
 }
