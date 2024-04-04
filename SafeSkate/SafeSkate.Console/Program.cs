@@ -9,19 +9,21 @@ internal class Program
         ServiceTypeProvider.UpdatePort = 9000;
         ServiceTypeProvider.QueryPort = 9001;
         var test2 = ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy;
+        test2.MapMarkerInfos.CollectionChanged += MapMarkerInfos_CollectionChanged;
         foreach (var marker in test2.MapMarkerInfos)
         {
             Console.WriteLine(marker);
         }
-
-        test2.AddMapMarkerInfo(new MapMarkerInfo(new Coordinate(40.7128, -74.0060, 10), "console client", DateTime.Now, Severity.Morphine));
-
-        foreach (var marker in test2.MapMarkerInfos)
+        while(true)
         {
-            Console.WriteLine(marker);
-        }
+            test2.AddMapMarkerInfo(new MapMarkerInfo(new Coordinate(40.7128, -74.0060, 10), "console client", DateTime.Now, Severity.Morphine));
 
-        Console.ReadKey();
-        return;
+            Console.ReadKey();
+        }
+    }
+
+    private static void MapMarkerInfos_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    {
+        Console.WriteLine(e.NewItems[0] as MapMarkerInfo);
     }
 }
