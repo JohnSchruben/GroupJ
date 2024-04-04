@@ -4,8 +4,8 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        ServiceTypeProvider.ServerIp = "172.214.88.163";
-        //ServiceTypeProvider.ServerIp = "127.0.0.1";
+        //ServiceTypeProvider.ServerIp = "172.214.88.163";
+        ServiceTypeProvider.ServerIp = "127.0.0.1";
         ServiceTypeProvider.UpdatePort = 9000;
         ServiceTypeProvider.QueryPort = 9001;
         var test2 = ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy;
@@ -14,7 +14,7 @@ internal class Program
         {
             Console.WriteLine(marker);
         }
-        while(true)
+        while (true)
         {
             Console.ReadKey();
             test2.AddMapMarkerInfo(new MapMarkerInfo(new Coordinate(40.7128, -74.0060, 10), "console client", DateTime.Now, Severity.Morphine));

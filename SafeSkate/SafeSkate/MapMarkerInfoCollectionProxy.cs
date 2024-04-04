@@ -1,24 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 
 namespace SafeSkate
 {
-    public class MapMarkerInfoCollectionProxy 
+    public class MapMarkerInfoCollectionProxy
     {
         private MapMarkerInfoCollection model;
         private ServiceClient serviceClient;
+
         public MapMarkerInfoCollectionProxy(MapMarkerInfoCollection model, ServiceClient serviceClient)
         {
-            this.model = model; 
+            this.model = model;
             this.serviceClient = serviceClient;
             this.serviceClient.MapMarkerUpdateReceived += this.ServiceClient_MapMarkerUpdateReceived;
         }
 
-        public ObservableCollection<MapMarkerInfo> MapMarkerInfos => this.model.MapMarkerInfos;  
+        public ObservableCollection<MapMarkerInfo> MapMarkerInfos => this.model.MapMarkerInfos;
 
         public void AddMapMarkerInfo(MapMarkerInfo mapMarkerInfo)
         {
@@ -56,7 +52,7 @@ namespace SafeSkate
             // we received an update from someone else. Handle it to get up to date.
             if (message.IsAdded)
             {
-                this.model.AddMapMarkerInfo(message.Info);   
+                this.model.AddMapMarkerInfo(message.Info);
             }
             else
             {

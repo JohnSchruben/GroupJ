@@ -4,7 +4,6 @@
     public class MapMarkerInfo
     {
         private Coordinate location;
-
         private string uploader;
         private DateTime timeUploaded;
         private Severity severity;

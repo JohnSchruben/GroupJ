@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Xml;
+﻿using System.Xml;
 using System.Xml.Serialization;
 
 namespace SafeSkate
@@ -33,6 +30,7 @@ namespace SafeSkate
                 return stringWriter.ToString();
             }
         }
+
         public static string SerializeMapMarkerInfo(MapMarkerInfo info)
         {
             var serializer = new XmlSerializer(typeof(MapMarkerInfo));
