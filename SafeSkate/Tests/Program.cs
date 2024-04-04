@@ -62,7 +62,7 @@ namespace Tests
 
             string serviceExecutablePath = Path.Combine(baseDirectory, string.Format("SafeSkate.Service{0}", extension));
 
-            string arguments = $"localhost 9000 9001";
+            string arguments = $"127.0.0.1 9000 9001";
 
             ProcessStartInfo startInfo = new ProcessStartInfo
             {

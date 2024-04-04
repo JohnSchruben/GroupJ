@@ -18,7 +18,7 @@ namespace SafeSkate.Desktop
             this.container = new UnityContainer();
             this.container.RegisterType<MainWindowViewModel>();
             this.container.AddExtension(new SafeSkateContainerExtension());
-            this.container.AddExtension(new ServiceContainerExtension("localhost", 9000, 9001));
+            this.container.AddExtension(new ServiceContainerExtension("127.0.0.1", 9000, 9001));
         }   
 
         public MainWindowViewModel MainWindowViewModel => this.container.Resolve<MainWindowViewModel>();

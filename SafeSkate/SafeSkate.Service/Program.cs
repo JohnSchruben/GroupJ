@@ -15,10 +15,10 @@ class Program
 
     private static ConcurrentBag<TcpClient> updateClients = new ConcurrentBag<TcpClient>();
     static ObservableCollection<MapMarkerInfo> markers; 
-    static async Task Main(string[] args)
+    static async Task Main2(string[] args)
     {
         // Defaults
-        string defaultIp = "localhost";
+        string defaultIp = "127.0.0.1";
         int defaultUpdatePort = 9000;
         int defaultQueryPort = 9001;
 
@@ -98,26 +98,39 @@ class Program
                 updateClients.Add(client);
             }
 
-            //BroadcastUpdate(message);
+            BroadcastUpdate(message, client);
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error handling update client: {ex.Message} {ex.StackTrace}");
         }
     }
-    public static void BroadcastUpdate(MapMarkerUpdateMessage updatedMarkerInfo)
+    public async static void BroadcastUpdate(MapMarkerUpdateMessage updatedMarkerInfo, TcpClient origin)
     {
-        foreach (var client in updateClients)
+        foreach (var client in updateClients/*.Where(x => x != origin)*/)
         {
             try
             {
-                var xml = SafeSkateSerializer.SerializeMapMarkerUpdateMessage(updatedMarkerInfo);
-
-                using (var stream = client.GetStream())
-                using (var writer = new StreamWriter(stream, Encoding.UTF8, leaveOpen: true))
+                Console.WriteLine($"Sending back to client");
+                if (client.Connected)
                 {
-                    writer.AutoFlush = true;
-                    writer.WriteLine(xml);
+                    var stream = client.GetStream();
+                    var writer = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
+                    var xml = SafeSkateSerializer.SerializeMapMarkerUpdateMessage(updatedMarkerInfo);
+
+                    await writer.WriteAsync(xml + Environment.NewLine);
+                    //var xml = SafeSkateSerializer.SerializeMapMarkerUpdateMessage(updatedMarkerInfo);
+
+                    //using (var stream = client.GetStream())
+                    //using (var writer = new StreamWriter(stream, Encoding.UTF8))
+                    //{
+                    //    writer.AutoFlush = true;
+                    //    writer.Write(xml);
+                    //}
+                }
+                else
+                {
+                    Console.WriteLine($"client not connected");
                 }
             }
             catch (Exception ex)
@@ -125,6 +138,9 @@ class Program
                 Console.WriteLine($"Error broadcasting update: {ex.Message}");
             }
         }
+
+
+        Console.WriteLine($"BroadcastUpdate done");
     }
 
     static async Task HandleQueryClientAsync(TcpClient client)

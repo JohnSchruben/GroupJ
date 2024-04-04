@@ -14,7 +14,7 @@ namespace SafeSkate.Desktop
         {
             Task.Run(async () =>
             {
-                ServiceTypeProvider.ServerIp = "localhost";
+                ServiceTypeProvider.ServerIp = "127.0.0.1";
                 ServiceTypeProvider.UpdatePort = 9000;
                 ServiceTypeProvider.QueryPort = 9001;
 
