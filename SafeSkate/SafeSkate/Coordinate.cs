@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SafeSkate
+﻿namespace SafeSkate
 {
     [Serializable]
     public class Coordinate : IEquatable<Coordinate>
     {
-        double latitude, longitude, elevation;
-        public Coordinate() { }
+        private double latitude, longitude, elevation;
+
+        public Coordinate()
+        { }
+
         public Coordinate(double latitude, double longitude, double elevation)
         {
             this.latitude = latitude;

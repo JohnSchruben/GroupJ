@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections;
-using System.IO;
-using System.Net.Sockets;
+﻿using System.Net.Sockets;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace SafeSkate
 {
-
     public class ServiceClient
     {
         private readonly string serverIp;
         private readonly int updatePort;
         private readonly int queryPort;
+
         private TcpClient updateClient;
         private TcpClient queryClient;
-        private CancellationTokenSource cancellationTokenSource;
+
+        private NetworkStream stream;
+        private StreamReader reader;
 
         public ServiceClient(string serverIp, int updatePort, int queryPort)
         {
@@ -24,19 +21,23 @@ namespace SafeSkate
             this.updatePort = updatePort;
             this.queryPort = queryPort;
             this.updateClient = new TcpClient();
-            this.queryClient = new TcpClient(); 
-            cancellationTokenSource = new CancellationTokenSource();
+            this.queryClient = new TcpClient();
         }
 
         public async void PublishMapMarkerUpdate(MapMarkerUpdateMessage message)
         {
             try
             {
-                using var stream = updateClient.GetStream();
+                if (!this.updateClient.Connected)
+                {
+                    await updateClient.ConnectAsync(serverIp, updatePort);
+                }
+
                 var writer = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
-                
+
                 // Send the query to the server
-                await writer.WriteLineAsync(SafeSkateSerializer.SerializeMapMarkerUpdateMessage(message));
+                string xml = SafeSkateSerializer.SerializeMapMarkerUpdateMessage(message);
+                await writer.WriteAsync(xml);
             }
             catch (Exception ex)
             {
@@ -82,51 +83,52 @@ namespace SafeSkate
 
         public async Task StartAsync()
         {
-            try
-            {
-                await updateClient.ConnectAsync(serverIp, updatePort);
-                Console.WriteLine("Connected to the server.");
-                ListenForUpdatesAsync(cancellationTokenSource.Token);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            this.ListenForUpdatesAsync();
         }
 
         public event Action<MapMarkerUpdateMessage> MapMarkerUpdateReceived;
-        private async Task ListenForUpdatesAsync(CancellationToken cancellationToken)
+
+        private async Task ListenForUpdatesAsync()
         {
             try
             {
-                using var stream = updateClient.GetStream();
-                var reader = new StreamReader(stream, Encoding.UTF8);
-
-                while (!cancellationToken.IsCancellationRequested)
+                while (true)
                 {
-                    if (updateClient.Available > 0)
+                    if (!updateClient.Connected)
                     {
-                        var message = await reader.ReadLineAsync();
-                        if (message != null)
+                        this.updateClient = new TcpClient();
+                        await updateClient.ConnectAsync(serverIp, updatePort);
+                        Console.WriteLine("Connected to the server.");
+                        this.stream = updateClient.GetStream();
+                    }
+
+                    if (stream.DataAvailable)
+                    {
+                        this.reader = new StreamReader(stream, Encoding.UTF8);
+                        int bufferSize = 4096;
+                        char[] buffer = new char[bufferSize];
+
+                        int bytesRead;
+                        while ((bytesRead = await reader.ReadAsync(buffer, 0, bufferSize)) > 0)
                         {
-                            Console.WriteLine($"Received update: {message}");
-                            var markerInfo = SafeSkateSerializer.DeserializeMapMarkerUpdateMessage(message);
-                            this.MapMarkerUpdateReceived?.Invoke(markerInfo);
+                            string receivedData = new string(buffer, 0, bytesRead);
+                            Console.WriteLine($"Received data: {receivedData}");
+                            var markerInfo = SafeSkateSerializer.DeserializeMapMarkerUpdateMessage(receivedData);
+                            if (markerInfo != null)
+                            {
+                                 this.MapMarkerUpdateReceived?.Invoke(markerInfo);
+                            }
                         }
                     }
                     else
                     {
-                        await Task.Delay(100, cancellationToken);
+                        await Task.Delay(100);
                     }
                 }
             }
-            catch (OperationCanceledException)
+            catch (SocketException ex)
             {
-                Console.WriteLine("Listening for updates was canceled.");
-            }
-            catch (SocketException)
-            {
-                Console.WriteLine($"Client Disconnected");
+                Console.WriteLine($"Client Disconnected {ex}");
             }
             catch (Exception ex)
             {
@@ -136,7 +138,6 @@ namespace SafeSkate
 
         public void Stop()
         {
-            cancellationTokenSource.Cancel();
             updateClient.Close();
             Console.WriteLine("Disconnected from the server.");
         }

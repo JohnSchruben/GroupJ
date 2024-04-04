@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 
 namespace SafeSkate
 {
@@ -20,7 +15,7 @@ namespace SafeSkate
 
         public bool AddMapMarkerInfo(MapMarkerInfo mapMarkerInfo)
         {
-            // don't add if it's a duplicate or if its null
+            // don't add if it's a duplicate or if its null.
             if (mapMarkerInfo != null && !mapMarkerInfos.Any(x => x.Equals(mapMarkerInfo)))
             {
                 mapMarkerInfos.Add(mapMarkerInfo);
