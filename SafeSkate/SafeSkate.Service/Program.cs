@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -13,6 +14,7 @@ class Program
 {
 
     private static ConcurrentBag<TcpClient> updateClients = new ConcurrentBag<TcpClient>();
+    static ObservableCollection<MapMarkerInfo> markers; 
     static async Task Main(string[] args)
     {
         // Defaults
@@ -26,9 +28,10 @@ class Program
         ServiceTypeProvider.QueryPort = args.Length > 2 && int.TryParse(args[2], out int queryPort) ? queryPort : defaultQueryPort;
 
         // Default map marker list. Will turn into a file read or a database.
-        ServiceTypeProvider.DefaultMapMarkerInfos = new List<MapMarkerInfo>
+        //ServiceTypeProvider.DefaultMapMarkerInfos = new List<MapMarkerInfo>
+        markers = new ObservableCollection<MapMarkerInfo>
         {
-             new MapMarkerInfo(new Coordinate(40.7128, -74.0060, 10), "server", DateTime.Now, Severity.Morphine)
+             new MapMarkerInfo(new Coordinate(35.211166, -97.441197, 10), "server", DateTime.Now, Severity.Morphine)
         };
 
         Console.WriteLine($"starting service host on {ServiceTypeProvider.ServerIp}");
@@ -71,47 +74,45 @@ class Program
     {
         try
         {
+
             var stream = client.GetStream();
             var reader = new StreamReader(stream, Encoding.UTF8);
             var xml = await reader.ReadToEndAsync();
+
             var message = SafeSkateSerializer.DeserializeMapMarkerUpdateMessage(xml);
 
             Console.WriteLine($"HandleUpdateClientAsync:{xml}");
             if (message.IsAdded)
             {
-                ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.AddMapMarkerInfo(message.Info);
-            }
-            else
-            {
-                ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.RemoveMapMarkerInfo(message.Info);
+                markers.Add(message.Info);
             }
 
-            BroadcastUpdate(message);
+            if (!updateClients.Contains(client))
+            {
+                updateClients.Add(client);
+            }
+
+            //BroadcastUpdate(message);
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error handling update client: {ex.Message} {ex.StackTrace}");
         }
-        finally
-        {
-            if (!updateClients.Contains(client))
-            {
-                updateClients.Add(client);
-            }
-        }
     }
-
     public static void BroadcastUpdate(MapMarkerUpdateMessage updatedMarkerInfo)
     {
         foreach (var client in updateClients)
         {
             try
             {
-                var stream = client.GetStream();
-                var writer = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
                 var xml = SafeSkateSerializer.SerializeMapMarkerUpdateMessage(updatedMarkerInfo);
 
-                writer.WriteLine(xml);
+                using (var stream = client.GetStream())
+                using (var writer = new StreamWriter(stream, Encoding.UTF8, leaveOpen: true))
+                {
+                    writer.AutoFlush = true;
+                    writer.WriteLine(xml);
+                }
             }
             catch (Exception ex)
             {
@@ -128,8 +129,7 @@ class Program
             var writer = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
 
             // send all markers upon client connection
-            var markers = ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.MapMarkerInfos;
-
+            //var markers = ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.MapMarkerInfos;
             var xml = SafeSkateSerializer.SerializeMapMarkerInfoList(markers.ToList());
 
             await writer.WriteAsync(xml + Environment.NewLine); 

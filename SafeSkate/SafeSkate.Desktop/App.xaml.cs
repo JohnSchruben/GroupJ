@@ -1,5 +1,6 @@
 ﻿using System.Configuration;
 using System.Data;
+using System.Runtime.ConstrainedExecution;
 using System.Windows;
 
 namespace SafeSkate.Desktop
@@ -19,7 +20,7 @@ namespace SafeSkate.Desktop
 
                 var model = ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy;
             }).Wait();
-            base.OnStartup(e); 
+            base.OnStartup(e);
         }
     }
 }

@@ -17,6 +17,8 @@ namespace SafeSkate
         private TcpClient updateClient;
         private TcpClient queryClient;
         private CancellationTokenSource cancellationTokenSource;
+        private NetworkStream stream;
+        private StreamReader reader;
 
         public ServiceClient(string serverIp, int updatePort, int queryPort)
         {
@@ -32,7 +34,14 @@ namespace SafeSkate
         {
             try
             {
-                using var stream = updateClient.GetStream();
+
+                this.updateClient = new TcpClient();
+                await updateClient.ConnectAsync(serverIp, updatePort);
+                Console.WriteLine("Connected to the server.");
+                this.stream = updateClient.GetStream();
+                this.reader = new StreamReader(stream, Encoding.UTF8);
+
+                //using var stream = updateClient.GetStream();
                 var writer = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
                 
                 // Send the query to the server
@@ -41,6 +50,10 @@ namespace SafeSkate
             catch (Exception ex)
             {
                 Console.WriteLine($"An error occurred while publishing an update: {ex.Message}");
+            }
+            finally
+            {
+                this.updateClient.Dispose();
             }
         }
 
@@ -86,6 +99,8 @@ namespace SafeSkate
             {
                 await updateClient.ConnectAsync(serverIp, updatePort);
                 Console.WriteLine("Connected to the server.");
+                this.stream = updateClient.GetStream();
+                this.reader = new StreamReader(stream, Encoding.UTF8);
                 ListenForUpdatesAsync(cancellationTokenSource.Token);
             }
             catch (Exception ex)
@@ -99,12 +114,20 @@ namespace SafeSkate
         {
             try
             {
-                using var stream = updateClient.GetStream();
-                var reader = new StreamReader(stream, Encoding.UTF8);
 
                 while (!cancellationToken.IsCancellationRequested)
                 {
-                    if (updateClient.Available > 0)
+                    if (!updateClient.Connected)
+                    {
+                        this.updateClient = new TcpClient();
+                        await updateClient.ConnectAsync(serverIp, updatePort);
+                        Console.WriteLine("Connected to the server.");
+                        this.stream = updateClient.GetStream();
+                        this.reader = new StreamReader(stream, Encoding.UTF8);
+                        continue;
+                    }
+
+                    if ( updateClient.Available > 0)
                     {
                         var message = await reader.ReadLineAsync();
                         if (message != null)
@@ -120,13 +143,9 @@ namespace SafeSkate
                     }
                 }
             }
-            catch (OperationCanceledException)
+            catch (SocketException ex)
             {
-                Console.WriteLine("Listening for updates was canceled.");
-            }
-            catch (SocketException)
-            {
-                Console.WriteLine($"Client Disconnected");
+                Console.WriteLine($"Client Disconnected {ex}");
             }
             catch (Exception ex)
             {
