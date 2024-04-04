@@ -4,8 +4,8 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        //ServiceTypeProvider.ServerIp = "172.214.88.163";
-        ServiceTypeProvider.ServerIp = "127.0.0.1";
+        ServiceTypeProvider.ServerIp = "172.214.88.163";
+        //ServiceTypeProvider.ServerIp = "127.0.0.1";
         ServiceTypeProvider.UpdatePort = 9000;
         ServiceTypeProvider.QueryPort = 9001;
         var test2 = ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy;

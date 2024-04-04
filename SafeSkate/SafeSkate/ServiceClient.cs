@@ -114,7 +114,10 @@ namespace SafeSkate
                             string receivedData = new string(buffer, 0, bytesRead);
                             Console.WriteLine($"Received data: {receivedData}");
                             var markerInfo = SafeSkateSerializer.DeserializeMapMarkerUpdateMessage(receivedData);
-                            this.MapMarkerUpdateReceived?.Invoke(markerInfo);
+                            if (markerInfo != null)
+                            {
+                                 this.MapMarkerUpdateReceived?.Invoke(markerInfo);
+                            }
                         }
                     }
                     else
