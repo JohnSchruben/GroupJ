@@ -5,12 +5,12 @@
         <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
         <ProductVersion>8.0.30703</ProductVersion>
         <SchemaVersion>2.0</SchemaVersion>
-        <ProjectGuid>{F7C1B0A7-1DF0-46C1-A93F-1973BAB76815}</ProjectGuid>
+        <ProjectGuid>{EE125D0E-FF31-4F7E-9127-F6AB188BC240}</ProjectGuid>
         <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
         <OutputType>Exe</OutputType>
-        <RootNamespace>SafeSkate.iOS</RootNamespace>
+        <RootNamespace>SafeSkate.Mobile.iOS</RootNamespace>
         <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-        <AssemblyName>SafeSkate.iOS</AssemblyName>
+        <AssemblyName>SafeSkate.Mobile.iOS</AssemblyName>
         <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
@@ -108,11 +108,6 @@
     <ItemGroup>
         <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012"/>
     </ItemGroup>
-    <ItemGroup>
-        <ProjectReference Include="..\SafeSkate\SafeSkate.csproj">
-            <Project>{0ECA1166-F0BD-45B7-8E4A-625EBEFD4C82}</Project>
-            <Name>SafeSkate</Name>
-        </ProjectReference>
-    </ItemGroup>
     <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets"/>
+    <Import Project="..\SafeSkate.Mobile\SafeSkate.Mobile.projitems" Label="Shared"/>
 </Project>

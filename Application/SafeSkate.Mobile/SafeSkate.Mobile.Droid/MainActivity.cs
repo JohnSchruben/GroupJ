@@ -6,9 +6,9 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 
-namespace SafeSkate.Droid
+namespace SafeSkate.Mobile.Droid
 {
-    [Activity(Label = "SafeSkate", Theme = "@style/MainTheme", MainLauncher = true,
+    [Activity(Label = "SafeSkate.Mobile", Theme = "@style/MainTheme", MainLauncher = true,
         ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using Foundation;
 using UIKit;
 
-namespace SafeSkate.iOS
+namespace SafeSkate.Mobile.iOS
 {
     public class Application
     {
