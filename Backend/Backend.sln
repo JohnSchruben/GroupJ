@@ -1,8 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "Service\Service.csproj", "{8EFBAC8E-8E3D-4425-B884-FB1EB0327B58}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SafeSkate.Service", "SafeSkate.Service\SafeSkate.Service.csproj", "{8EFBAC8E-8E3D-4425-B884-FB1EB0327B58}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{1C4F48AB-E80D-4426-A3C7-820A79C2D7FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SafeSkate", "SafeSkate\SafeSkate.csproj", "{3EF3167B-5196-4369-A9A7-EDE160EA6EAE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +20,9 @@ Global
 		{1C4F48AB-E80D-4426-A3C7-820A79C2D7FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C4F48AB-E80D-4426-A3C7-820A79C2D7FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C4F48AB-E80D-4426-A3C7-820A79C2D7FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EF3167B-5196-4369-A9A7-EDE160EA6EAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EF3167B-5196-4369-A9A7-EDE160EA6EAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EF3167B-5196-4369-A9A7-EDE160EA6EAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EF3167B-5196-4369-A9A7-EDE160EA6EAE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
