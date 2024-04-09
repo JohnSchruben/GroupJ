@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SafeSkate.Service", "SafeSk
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SafeSkate.Desktop", "SafeSkate.Desktop\SafeSkate.Desktop.csproj", "{271187C4-ECFA-4894-954F-EA2F71B32469}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SafeSkate.Console", "SafeSkate.Console\SafeSkate.Console.csproj", "{51BA4547-70B4-425D-A0D9-80F7C74FB06D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SafeSkate.Console", "SafeSkate.Console\SafeSkate.Console.csproj", "{51BA4547-70B4-425D-A0D9-80F7C74FB06D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SafeSkate.Mobile", "SafeSkate.Mobile\SafeSkate.Mobile.csproj", "{85AB0EDB-B862-4AFF-AB6B-653053339A3F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,12 @@ Global
 		{51BA4547-70B4-425D-A0D9-80F7C74FB06D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51BA4547-70B4-425D-A0D9-80F7C74FB06D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51BA4547-70B4-425D-A0D9-80F7C74FB06D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85AB0EDB-B862-4AFF-AB6B-653053339A3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85AB0EDB-B862-4AFF-AB6B-653053339A3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85AB0EDB-B862-4AFF-AB6B-653053339A3F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{85AB0EDB-B862-4AFF-AB6B-653053339A3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85AB0EDB-B862-4AFF-AB6B-653053339A3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85AB0EDB-B862-4AFF-AB6B-653053339A3F}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

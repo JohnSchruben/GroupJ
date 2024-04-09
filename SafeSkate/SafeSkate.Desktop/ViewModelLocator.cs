@@ -18,5 +18,6 @@ namespace SafeSkate.Desktop
         }
 
         public MainWindowViewModel MainWindowViewModel => this.container.Resolve<MainWindowViewModel>();
+        public MapMarkerInfo test => this.container.Resolve<MapMarkerInfo>();
     }
 }
