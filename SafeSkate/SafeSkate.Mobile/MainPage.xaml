@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:SafeSkate.Mobile"
+             xmlns:maps="http://schemas.microsoft.com/dotnet/2021/maui/maps"
+             xmlns:sensors="clr-namespace:Microsoft.Maui.Devices.Sensors;assembly=Microsoft.Maui.Essentials"
+             BindingContext="{Binding MainWindowViewModel, Source={StaticResource Locator}}"
+             x:Class="SafeSkate.Mobile.MainPage">
+    <ContentPage.Resources>
+        <local:PositionToLocationConverter x:Key="PositionToLocationConverter" />
+    </ContentPage.Resources>
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="5,0"
+            Spacing="5">
+            <maps:Map x:Name="map" 
+              WidthRequest="400"
+              HeightRequest="600"
+              ItemsSource="{Binding MarkerCollection}"
+              VerticalOptions="FillAndExpand"
+              HorizontalOptions="FillAndExpand">
+                <x:Arguments>
+                    <maps:MapSpan>
+                        <x:Arguments>
+                            <sensors:Location>
+                                <x:Arguments>
+                                    <x:Double>35.211166</x:Double>
+                                    <x:Double>-97.441197</x:Double>
+                                </x:Arguments>
+                            </sensors:Location>
+                            <x:Double>0.01</x:Double>
+                            <x:Double>0.01</x:Double>
+                        </x:Arguments>
+                    </maps:MapSpan>
+                </x:Arguments>
+                <maps:Map.ItemTemplate>
+                    <DataTemplate>
+                        <maps:Pin Location="{Binding Location, Converter={StaticResource PositionToLocationConverter}}"
+                              Label="{Binding Uploader}" />
+                    </DataTemplate>
+                </maps:Map.ItemTemplate>
+            </maps:Map>
+                <Button
+                x:Name="CounterBtn"
+                Text="Click me" 
+                SemanticProperties.Hint="Counts the number of times you click"
+                Clicked="OnCounterClicked"
+                HorizontalOptions="Fill" />
+            <ListView ItemsSource="{Binding MarkerCollection}"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
