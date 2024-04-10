@@ -2,6 +2,9 @@
 
 namespace SafeSkate
 {
+    /// <summary>
+    ///   Ticket #11 Adding Icons
+    /// </summary>
     public class MapMarkerInfoCollection
     {
         private readonly ObservableCollection<MapMarkerInfo> mapMarkerInfos;

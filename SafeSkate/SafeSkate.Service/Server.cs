@@ -5,6 +5,9 @@ using System.Text;
 
 namespace SafeSkate.Service
 {
+    /// <summary>
+    ///   Ticket #6 The Service
+    /// </summary>
     internal class Server
     {
         private bool isListening = false;

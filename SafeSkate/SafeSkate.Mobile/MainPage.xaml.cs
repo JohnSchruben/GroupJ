@@ -4,6 +4,9 @@ using Map = Microsoft.Maui.Controls.Maps.Map;
 
 namespace SafeSkate.Mobile
 {
+    /// <summary>
+    ///   Ticket #( The Map
+    /// </summary>
     public partial class MainPage : ContentPage
     {
         int count = 0;

@@ -10,6 +10,9 @@ using System.Diagnostics;
 
 namespace SafeSkate.Service
 {
+    /// <summary>
+    ///   Ticket #4 The Server
+    /// </summary>
     internal class NewProgram
     {
         private static ObservableCollection<MapMarkerInfo> markers;

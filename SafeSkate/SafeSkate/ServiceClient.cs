@@ -3,6 +3,9 @@ using System.Text;
 
 namespace SafeSkate
 {
+    /// <summary>
+    ///   Ticket #6 The Service
+    /// </summary>
     public class ServiceClient
     {
         private readonly string serverIp;

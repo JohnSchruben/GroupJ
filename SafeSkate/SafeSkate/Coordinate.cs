@@ -1,5 +1,8 @@
 ﻿namespace SafeSkate
 {
+    /// <summary>
+    ///   Ticket #5 The Service Types
+    /// </summary>
     [Serializable]
     public class Coordinate : IEquatable<Coordinate>
     {
