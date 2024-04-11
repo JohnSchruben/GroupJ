@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Maui.Controls.Maps;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,5 +47,8 @@ namespace SafeSkate.Mobile
             var newInfo = await this.GetLocationAsync();
             this.model.AddMapMarkerInfo(new MapMarkerInfo(newInfo, "desktop client", DateTime.Now, Severity.ThePersonDied));
         }
+
+     
+        
     }
 }

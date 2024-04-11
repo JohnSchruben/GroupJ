@@ -37,6 +37,7 @@
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 		<SignAssembly>False</SignAssembly>
+		<Platforms>AnyCPU;ARM64;x64</Platforms>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-android|AnyCPU'">
@@ -49,7 +50,43 @@
 	  <AndroidSigningKeyPass>keypassword</AndroidSigningKeyPass>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-android|x64'">
+	  <AndroidUseAapt2>True</AndroidUseAapt2>
+	  <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
+	  <AndroidPackageFormat>apk</AndroidPackageFormat>
+	  <AndroidKeyStore>False</AndroidKeyStore>
+	  <AndroidSigningStorePass>password99</AndroidSigningStorePass>
+	  <AndroidSigningKeyAlias>key</AndroidSigningKeyAlias>
+	  <AndroidSigningKeyPass>keypassword</AndroidSigningKeyPass>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-android|ARM64'">
+	  <AndroidUseAapt2>True</AndroidUseAapt2>
+	  <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
+	  <AndroidPackageFormat>apk</AndroidPackageFormat>
+	  <AndroidKeyStore>False</AndroidKeyStore>
+	  <AndroidSigningStorePass>password99</AndroidSigningStorePass>
+	  <AndroidSigningKeyAlias>key</AndroidSigningKeyAlias>
+	  <AndroidSigningKeyPass>keypassword</AndroidSigningKeyPass>
+	</PropertyGroup>
+
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-android|AnyCPU'">
+	  <AndroidKeyStore>False</AndroidKeyStore>
+	  <AndroidSigningStorePass>password99</AndroidSigningStorePass>
+	  <AndroidSigningKeyAlias>key</AndroidSigningKeyAlias>
+	  <AndroidSigningKeyPass>keypassword</AndroidSigningKeyPass>
+	  <AndroidPackageFormat>apk</AndroidPackageFormat>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-android|x64'">
+	  <AndroidKeyStore>False</AndroidKeyStore>
+	  <AndroidSigningStorePass>password99</AndroidSigningStorePass>
+	  <AndroidSigningKeyAlias>key</AndroidSigningKeyAlias>
+	  <AndroidSigningKeyPass>keypassword</AndroidSigningKeyPass>
+	  <AndroidPackageFormat>apk</AndroidPackageFormat>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-android|ARM64'">
 	  <AndroidKeyStore>False</AndroidKeyStore>
 	  <AndroidSigningStorePass>password99</AndroidSigningStorePass>
 	  <AndroidSigningKeyAlias>key</AndroidSigningKeyAlias>

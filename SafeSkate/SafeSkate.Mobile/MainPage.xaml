@@ -47,7 +47,9 @@
                 SemanticProperties.Hint="Counts the number of times you click"
                 Clicked="OnCounterClicked"
                 HorizontalOptions="Fill" />
-            <ListView ItemsSource="{Binding MarkerCollection}"/>
+            <maps:Map MapClicked="Map_MapClicked"></maps:Map>
+                
+                    <ListView ItemsSource="{Binding MarkerCollection}"/>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

@@ -27,6 +27,7 @@ namespace SafeSkate.Mobile
             markers = new ObservableCollection<MapMarkerInfo>(ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.MapMarkerInfos);
             this.map.ItemsSource = this.markers;
             ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.MapMarkerInfos.CollectionChanged += MapMarkerInfos_CollectionChanged;
+            map.MapClicked += Map_MapClicked;
         }
 
         private void MapMarkerInfos_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -60,6 +61,23 @@ namespace SafeSkate.Mobile
 
             ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.AddMapMarkerInfo(
                 new MapMarkerInfo(new Coordinate(randomLatitude, randomLongitude, 10), "mobile client", DateTime.Now, Severity.Morphine));
+        }
+
+        [Obsolete]
+        private async void Map_MapClicked(object? sender, Microsoft.Maui.Controls.Maps.MapClickedEventArgs e)
+        {
+            if (e != null)
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    SafeSkate.Coordinate Aelita = new Coordinate(e.Location.Latitude, e.Location.Longitude, 10);
+                    MapMarkerInfo mapMarker = new MapMarkerInfo(Aelita, "User Marker", DateTime.Now, Severity.ThePersonDied);
+                    this.markers.Add(mapMarker);
+                });
+            }
+                
+           
+
         }
     }
 
