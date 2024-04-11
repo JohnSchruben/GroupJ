@@ -12,6 +12,7 @@ namespace SafeSkate.Mobile
         public MainPage()
         {
             InitializeComponent();
+            this.listView.ItemsSource = ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.MapMarkerInfos;
         }
     }
 }
