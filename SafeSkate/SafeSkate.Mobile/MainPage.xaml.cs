@@ -68,12 +68,14 @@ namespace SafeSkate.Mobile
         {
             if (e != null)
             {
-                Device.BeginInvokeOnMainThread(() =>
-                {
+                Device.BeginInvokeOnMainThread(() => {
+                    ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.AddMapMarkerInfo(new MapMarkerInfo(new Coordinate(e.Location.Latitude, e.Location.Longitude, 10),"User Marker",DateTime.Now,Severity.ThePersonDied));
+
                     SafeSkate.Coordinate Aelita = new Coordinate(e.Location.Latitude, e.Location.Longitude, 10);
                     MapMarkerInfo mapMarker = new MapMarkerInfo(Aelita, "User Marker", DateTime.Now, Severity.ThePersonDied);
                     this.markers.Add(mapMarker);
                 });
+               
             }
                 
            
