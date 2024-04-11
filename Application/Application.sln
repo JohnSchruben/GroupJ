@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SafeSkate.Mobile.Droid", "S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SafeSkate.Mobile.iOS", "SafeSkate.Mobile\SafeSkate.Mobile.iOS\SafeSkate.Mobile.iOS.csproj", "{EE125D0E-FF31-4F7E-9127-F6AB188BC240}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SafeSkate", "..\Backend\SafeSkate\SafeSkate.csproj", "{6A72B0D6-40BF-4E20-9117-9D8F78ED3D3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SafeSkate", "..\Backend\SafeSkate\SafeSkate.csproj", "{6A72B0D6-40BF-4E20-9117-9D8F78ED3D3F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SafeSkate.MacOS", "SafeSkate.MacOS\SafeSkate.MacOS.csproj", "{FEC2BD77-C941-4B99-8BD1-1E2B63107D92}"
 EndProject
@@ -163,5 +163,10 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {33B1C5D0-1C7A-44DE-9043-512F30BBB52C}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		SafeSkate.Mobile\SafeSkate.Mobile\SafeSkate.Mobile.projitems*{037a5c6b-100a-4af9-840a-5ac83a825bf3}*SharedItemsImports = 4
+		SafeSkate.Mobile\SafeSkate.Mobile\SafeSkate.Mobile.projitems*{8e856692-a6d3-4498-b801-46c33d502ad7}*SharedItemsImports = 13
+		SafeSkate.Mobile\SafeSkate.Mobile\SafeSkate.Mobile.projitems*{ee125d0e-ff31-4f7e-9127-f6ab188bc240}*SharedItemsImports = 4
 	EndGlobalSection
 EndGlobal
