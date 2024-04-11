@@ -1,5 +1,6 @@
 ﻿using System.Net.Sockets;
 using System.Text;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace SafeSkate
 {
@@ -119,7 +120,7 @@ namespace SafeSkate
                             var markerInfo = SafeSkateSerializer.DeserializeMapMarkerUpdateMessage(receivedData);
                             if (markerInfo != null)
                             {
-                                 this.MapMarkerUpdateReceived?.Invoke(markerInfo);
+                                this.MapMarkerUpdateReceived?.Invoke(markerInfo);
                             }
                         }
                     }

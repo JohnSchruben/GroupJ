@@ -1,4 +1,5 @@
-﻿namespace SafeSkate.Mobile
+﻿
+namespace SafeSkate.Mobile
 {
     /// <summary>
     ///   Ticket #8 The Mobile App
@@ -15,10 +16,10 @@
 
                 var model = ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy;
             }).Wait();
+
             InitializeComponent();
 
-            MainPage = new AppShell();
-
+            MainPage = new MainPage();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Maui.Devices.Sensors;
 using Microsoft.Maui.Maps;
+using System.Collections.ObjectModel;
 using Map = Microsoft.Maui.Controls.Maps.Map;
 
 namespace SafeSkate.Mobile
@@ -10,13 +11,36 @@ namespace SafeSkate.Mobile
     public partial class MainPage : ContentPage
     {
         int count = 0;
+        ObservableCollection<MapMarkerInfo> markers = new ObservableCollection<MapMarkerInfo>();
+        public event Action MarkerAddRequested;
+        Random random = new Random();
 
+        // Define the range for latitude and longitude in the United States
+        double minLatitude = 24.396308;
+        double maxLatitude = 49.384358;
+        double minLongitude = -125.001650;
+        double maxLongitude = -66.934570;
         public MainPage()
         {
+
             InitializeComponent();
-            //Location oklahomaCity = new Location(35.4676, -97.5164);
-            //MapSpan mapSpan = new MapSpan(oklahomaCity, 0.01, 0.01);
-            //map = new Map(mapSpan);
+            markers = new ObservableCollection<MapMarkerInfo>(ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.MapMarkerInfos);
+            this.map.ItemsSource = this.markers;
+            ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.MapMarkerInfos.CollectionChanged += MapMarkerInfos_CollectionChanged;
+        }
+
+        private void MapMarkerInfos_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems != null)
+            {
+                foreach(MapMarkerInfo markerInfo in e.NewItems)
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                             {
+                                 this.markers.Add(markerInfo);
+                             });
+                }
+            }
         }
 
         private void OnCounterClicked(object sender, EventArgs e)
@@ -30,7 +54,12 @@ namespace SafeSkate.Mobile
 
             SemanticScreenReader.Announce(CounterBtn.Text);
 
-            ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.AddMapMarkerInfo(new MapMarkerInfo(new Coordinate(40.7128, -74.0060, 10), "mobile client", DateTime.Now, Severity.Morphine));
+            // Generate a random latitude and longitude within the range
+            double randomLatitude = random.NextDouble() * (maxLatitude - minLatitude) + minLatitude;
+            double randomLongitude = random.NextDouble() * (maxLongitude - minLongitude) + minLongitude;
+
+            ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.AddMapMarkerInfo(
+                new MapMarkerInfo(new Coordinate(randomLatitude, randomLongitude, 10), "mobile client", DateTime.Now, Severity.Morphine));
         }
     }
 
