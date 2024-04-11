@@ -22,6 +22,7 @@ Work exclusively within your branch on the modules related to your task to minim
 If your task requires changes in other modules, coordinate with the respective team member.
 Commit changes frequently but merge branches into the master branch infrequently.
 Use pull requests for merging, linking your branch with the pull request for a review before merging into the master branch.
+
 Product Backlog
 Refer to the product backlog for managing and claiming tasks. It can be accessed at the following link:
 
