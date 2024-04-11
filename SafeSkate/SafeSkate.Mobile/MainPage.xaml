@@ -48,6 +48,7 @@
                 Clicked="OnCounterClicked"
                 HorizontalOptions="Fill" />
             <maps:Map MapClicked="Map_MapClicked"></maps:Map>
+           
                 
                     <ListView ItemsSource="{Binding MarkerCollection}"/>
         </VerticalStackLayout>

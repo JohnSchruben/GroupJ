@@ -20,6 +20,7 @@ namespace SafeSkate.Mobile
         double maxLatitude = 49.384358;
         double minLongitude = -125.001650;
         double maxLongitude = -66.934570;
+  
         public MainPage()
         {
 
@@ -27,7 +28,9 @@ namespace SafeSkate.Mobile
             markers = new ObservableCollection<MapMarkerInfo>(ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.MapMarkerInfos);
             this.map.ItemsSource = this.markers;
             ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.MapMarkerInfos.CollectionChanged += MapMarkerInfos_CollectionChanged;
+            //Methods and event handlers for User Interaction with Map
             map.MapClicked += Map_MapClicked;
+           
         }
 
         private void MapMarkerInfos_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -68,19 +71,27 @@ namespace SafeSkate.Mobile
         {
             if (e != null)
             {
-                Device.BeginInvokeOnMainThread(() => {
-                    ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.AddMapMarkerInfo(new MapMarkerInfo(new Coordinate(e.Location.Latitude, e.Location.Longitude, 10),"User Marker",DateTime.Now,Severity.ThePersonDied));
-
+                Device.BeginInvokeOnMainThread(async () => {
+                    //Prompt the user to add a description
+                    string temp = await DisplayPromptAsync("Information", "Enter an approprite description of the added location", "OK", "Cancel", null, 256, null, "");
+                    ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.AddMapMarkerInfo(new MapMarkerInfo(new Coordinate(e.Location.Latitude, e.Location.Longitude, 10), temp, DateTime.Now, Severity.ThePersonDied));
+                    //e contains the clicked coordinates,so we grab them and store them in a local variable
                     SafeSkate.Coordinate Aelita = new Coordinate(e.Location.Latitude, e.Location.Longitude, 10);
-                    MapMarkerInfo mapMarker = new MapMarkerInfo(Aelita, "User Marker", DateTime.Now, Severity.ThePersonDied);
+                    MapMarkerInfo mapMarker = new MapMarkerInfo(Aelita, temp, DateTime.Now, Severity.ThePersonDied);
                     this.markers.Add(mapMarker);
                 });
                
             }
                 
-           
+           }
+      
+
+            
 
         }
+      
     }
 
-}
+    
+
+
