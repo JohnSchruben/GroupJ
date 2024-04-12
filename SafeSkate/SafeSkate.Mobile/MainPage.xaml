@@ -27,10 +27,10 @@
                                     <x:Double>-97.441197</x:Double>
                                 </x:Arguments>
                             </sensors:Location>
-                            <x:Double>25.0</x:Double>
-                            <x:Double>50.0</x:Double>
-                            <!--<x:Double>0.01</x:Double>
-                            <x:Double>0.01</x:Double>-->
+                            <!--<x:Double>25.0</x:Double>
+                            <x:Double>50.0</x:Double>-->
+                            <x:Double>0.01</x:Double>
+                            <x:Double>0.01</x:Double>
                         </x:Arguments>
                     </maps:MapSpan>
                 </x:Arguments>

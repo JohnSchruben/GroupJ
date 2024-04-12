@@ -20,9 +20,13 @@ namespace SafeSkate.Mobile
         double maxLatitude = 49.384358;
         double minLongitude = -125.001650;
         double maxLongitude = -66.934570;
+        //OU
+        //double minLatitude = 35.203903;
+        //double maxLatitude = 35.232751;
+        //double minLongitude = -97.423590;
+        //double maxLongitude = -97.453945;
         public MainPage()
         {
-
             InitializeComponent();
             markers = new ObservableCollection<MapMarkerInfo>(ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.MapMarkerInfos);
             this.map.ItemsSource = this.markers;
@@ -57,9 +61,10 @@ namespace SafeSkate.Mobile
             // Generate a random latitude and longitude within the range
             double randomLatitude = random.NextDouble() * (maxLatitude - minLatitude) + minLatitude;
             double randomLongitude = random.NextDouble() * (maxLongitude - minLongitude) + minLongitude;
+            
 
             ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.AddMapMarkerInfo(
-                new MapMarkerInfo(new Coordinate(randomLatitude, randomLongitude, 10), "mobile client", DateTime.Now, Severity.Morphine));
+                new MapMarkerInfo(new Coordinate(randomLatitude, randomLongitude, 10), "john's mobile client", DateTime.Now, Severity.Morphine));
         }
     }
 

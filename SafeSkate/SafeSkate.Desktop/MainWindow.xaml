@@ -8,13 +8,7 @@
         mc:Ignorable="d"
         xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
         Title="MainWindow" Height="800" Width="800">
-    <Grid>
-        <StackPanel Orientation="Vertical">
-            <DockPanel>
-                <wv2:WebView2 x:Name="webView" MinHeight="550" MinWidth="550" NavigationCompleted="webView_NavigationCompleted"/>
-                <ListView DockPanel.Dock="Right" ItemsSource="{Binding MarkerCollection}" MinWidth="300" ScrollViewer.VerticalScrollBarVisibility="auto"/>
-            </DockPanel>
-            <Button DockPanel.Dock="Bottom" Command="{Binding AddMarkerCommand}" Content="Add"/>
-        </StackPanel>
-    </Grid>
+    <Viewbox Stretch="Fill">
+        <wv2:WebView2 x:Name="webView" MinHeight="550" MinWidth="550" DockPanel.Dock="Left" NavigationCompleted="webView_NavigationCompleted"/>
+    </Viewbox>
 </Window>

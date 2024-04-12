@@ -44,7 +44,7 @@ namespace SafeSkate.Desktop
                     }
 
                     </script>
-                    <script src=""https://maps.googleapis.com/maps/api/js?key=AIzaSyAPnp0BuPlCdllcsuYm0Oz28IEqXzhYT38&callback=initMap"" async defer></script>
+                    <script src=""https://maps.googleapis.com/maps/api/js?key=2AIzaSyBvTpNnvy_5fNhvFrRrtZ8_NYVlG4P-xcY&callback=initMap"" async defer></script>
                 </head>
                 <body>
                     <div id=""map"" style=""width: 100%; height: 100vh;""></div>
@@ -57,6 +57,12 @@ namespace SafeSkate.Desktop
         {
             DataContext = ViewModelLocator.Instance.MainWindowViewModel;
             this.mapMarkers = (this.DataContext as MainWindowViewModel).MarkerCollection as ObservableCollection<MapMarkerInfo>;
+
+            var list = new List<MapMarkerInfo>(this.mapMarkers);
+            foreach (MapMarkerInfo marker in list)
+            {
+                this.AddMarker(marker.Location.Latitude, marker.Location.Longitude);
+            }
             this.mapMarkers.CollectionChanged += MapMarkers_CollectionChanged;
         }
 
@@ -73,17 +79,21 @@ namespace SafeSkate.Desktop
 
         public async void AddMarker(double lat, double lng)
         {
-            if (webView?.CoreWebView2 != null)
+            Application.Current.Dispatcher.Invoke(async () => 
             {
-                await webView.CoreWebView2.ExecuteScriptAsync($"addMarker({lat}, {lng})");
-            }
+                if (webView?.CoreWebView2 != null)
+                {
+                    await webView.CoreWebView2.ExecuteScriptAsync($"addMarker({lat}, {lng})");
+                }
+            });
         }
 
         private async void webView_NavigationCompleted(object sender, Microsoft.Web.WebView2.Core.CoreWebView2NavigationCompletedEventArgs e)
         {
             if (this.mapMarkers != null)
             {
-                foreach (var marker in this.mapMarkers)
+                var list = new List<MapMarkerInfo>(this.mapMarkers);
+                foreach (var marker in list)
                 {
                     this.AddMarker(marker.Location.Latitude, marker.Location.Longitude);
                 }

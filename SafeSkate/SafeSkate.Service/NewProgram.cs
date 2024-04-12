@@ -21,7 +21,7 @@ namespace SafeSkate.Service
         public static void Main(string[] args)
         {
             // Defaults
-            string defaultIp = "127.0.0.1";
+            string defaultIp = "172.214.88.163";
             int defaultUpdatePort = 9000;
             int defaultQueryPort = 9001;
 
