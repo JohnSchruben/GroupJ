@@ -44,7 +44,7 @@ namespace SafeSkate.Desktop
                     }
 
                     </script>
-                    <script src=""https://maps.googleapis.com/maps/api/js?key=2AIzaSyBvTpNnvy_5fNhvFrRrtZ8_NYVlG4P-xcY&callback=initMap"" async defer></script>
+                    <script src=""https://maps.googleapis.com/maps/api/js?key=AIzaSyBvTpNnvy_5fNhvFrRrtZ8_NYVlG4P-xcY&callback=initMap"" async defer></script>
                 </head>
                 <body>
                     <div id=""map"" style=""width: 100%; height: 100vh;""></div>

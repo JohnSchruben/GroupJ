@@ -66,8 +66,8 @@ namespace SafeSkate.Service
                     // add newly connected client node in List
                     clientSockets.Add((cNode = new ClientNode(
                         tclient,
-                        new byte[Int32.MaxValue],
-                        new byte[Int32.MaxValue],
+                        new byte[ushort.MaxValue],
+                        new byte[ushort.MaxValue],
                         tclient.Client.RemoteEndPoint.ToString()
                     )));
                 }

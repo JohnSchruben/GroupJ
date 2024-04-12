@@ -109,7 +109,7 @@ namespace SafeSkate
                     if (stream.DataAvailable)
                     {
                         this.reader = new StreamReader(stream, Encoding.UTF8);
-                        int bufferSize = Int32.MaxValue;
+                        int bufferSize = ushort.MaxValue;
                         char[] buffer = new char[bufferSize];
 
                         int bytesRead;
