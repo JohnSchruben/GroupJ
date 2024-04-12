@@ -10,8 +10,8 @@ internal class Program
         double maxLatitude = 90;
         double minLongitude = -180;
         double maxLongitude = 180;
-        //ServiceTypeProvider.ServerIp = "172.214.88.163";
-        ServiceTypeProvider.ServerIp = "127.0.0.1";
+        ServiceTypeProvider.ServerIp = "172.214.88.163";
+        //ServiceTypeProvider.ServerIp = "127.0.0.1";
         ServiceTypeProvider.UpdatePort = 9000;
         ServiceTypeProvider.QueryPort = 9001;
         var model = ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy;
@@ -23,8 +23,8 @@ internal class Program
         }
         while (true)
         {
-            //Thread.Sleep(TimeSpan.FromSeconds(1));
-            Console.ReadKey();
+            Thread.Sleep(TimeSpan.FromSeconds(1));
+            //Console.ReadKey();
             // Generate a random latitude and longitude within the range
             double randomLatitude = random.NextDouble() * (maxLatitude - minLatitude) + minLatitude;
             double randomLongitude = random.NextDouble() * (maxLongitude - minLongitude) + minLongitude;
