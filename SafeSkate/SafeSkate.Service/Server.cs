@@ -115,6 +115,10 @@ namespace SafeSkate.Service
                             {
                                 markers.Add(message.Info);
                             }
+                            else
+                            {
+                                markers.Remove(message.Info);   
+                            }
 
                             BroadcastClients(strRecv);
                         }

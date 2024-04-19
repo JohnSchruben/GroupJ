@@ -1,15 +1,19 @@
 ﻿using SafeSkate;
 using System;
+using System.Diagnostics;
 
 internal class Program
 {
     private static void Main(string[] args)
     {
         Random random = new Random();
-        double minLatitude = -90;
-        double maxLatitude = 90;
-        double minLongitude = -180;
-        double maxLongitude = 180;
+        double minLatitude = 35.203977;
+        double maxLatitude = 35.211130;
+        double minLongitude = -97.441307;
+        double maxLongitude = -97.447905;
+        int processId = Process.GetCurrentProcess().Id;
+        int hashedValue = (processId % 4) + 1;
+        Severity severity = (Severity)hashedValue;
         ServiceTypeProvider.ServerIp = "172.214.88.163";
         //ServiceTypeProvider.ServerIp = "127.0.0.1";
         ServiceTypeProvider.UpdatePort = 9000;
@@ -30,7 +34,7 @@ internal class Program
             double randomLongitude = random.NextDouble() * (maxLongitude - minLongitude) + minLongitude;
 
             model.AddMapMarkerInfo(
-                new MapMarkerInfo(new Coordinate(randomLatitude, randomLongitude, 10), "john's mobile client", DateTime.Now, Severity.Morphine));
+                new MapMarkerInfo(new Coordinate(randomLatitude, randomLongitude, 10), "john's mobile client", DateTime.Now, severity));
         }
     }
 

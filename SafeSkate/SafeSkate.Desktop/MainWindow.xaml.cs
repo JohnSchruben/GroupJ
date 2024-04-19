@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Media;
 
 namespace SafeSkate.Desktop
 {
@@ -36,12 +37,23 @@ namespace SafeSkate.Desktop
                         });
                     }
 
-                    function addMarker(lat, lng) {
+                    function addMarker(lat, lng, color) {
+                        const markerIcon = {
+                            path: google.maps.SymbolPath.CIRCLE,
+                            fillColor: color,
+                            fillOpacity: 1.0,
+                            strokeColor: color,
+                            strokeWeight: 1,
+                            scale: 6  // Size of the marker
+                        };
+
                         new google.maps.Marker({
                             position: { lat: lat, lng: lng },
-                            map: map
+                            map: map,
+                            icon: markerIcon
                         });
                     }
+
 
                     </script>
                     <script src=""https://maps.googleapis.com/maps/api/js?key=AIzaSyBvTpNnvy_5fNhvFrRrtZ8_NYVlG4P-xcY&callback=initMap"" async defer></script>
@@ -52,38 +64,38 @@ namespace SafeSkate.Desktop
                 </html>
                 ");
         }
-
+        private List<string> severityColors = new List<string>() { "blue", "yellow", "red", "black"};
         private async Task Window_LoadedAsync(object sender, RoutedEventArgs e)
         {
             DataContext = ViewModelLocator.Instance.MainWindowViewModel;
             this.mapMarkers = (this.DataContext as MainWindowViewModel).MarkerCollection as ObservableCollection<MapMarkerInfo>;
-
             var list = new List<MapMarkerInfo>(this.mapMarkers);
-            foreach (MapMarkerInfo marker in list)
-            {
-                this.AddMarker(marker.Location.Latitude, marker.Location.Longitude);
-            }
+            this.AddMarkers(list);
             this.mapMarkers.CollectionChanged += MapMarkers_CollectionChanged;
         }
-
+        private void AddMarkers(IEnumerable<MapMarkerInfo> markers)
+        {
+            foreach (MapMarkerInfo marker in markers)
+            {
+                this.AddMarker(marker.Location.Latitude, marker.Location.Longitude, severityColors[(int)marker.Severity]);
+            }
+        }
         private void MapMarkers_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
             {
-                foreach (MapMarkerInfo marker in e.NewItems)
-                {
-                    this.AddMarker(marker.Location.Latitude, marker.Location.Longitude);
-                }
+                IEnumerable<MapMarkerInfo> markers = e.NewItems.OfType<MapMarkerInfo>();
+                this.AddMarkers(markers);
             }
         }
 
-        public async void AddMarker(double lat, double lng)
+        public async void AddMarker(double lat, double lng, string color)
         {
             Application.Current.Dispatcher.Invoke(async () => 
             {
                 if (webView?.CoreWebView2 != null)
                 {
-                    await webView.CoreWebView2.ExecuteScriptAsync($"addMarker({lat}, {lng})");
+                    await webView.CoreWebView2.ExecuteScriptAsync($"addMarker({lat}, {lng}, '{color}')");
                 }
             });
         }
@@ -93,10 +105,7 @@ namespace SafeSkate.Desktop
             if (this.mapMarkers != null)
             {
                 var list = new List<MapMarkerInfo>(this.mapMarkers);
-                foreach (var marker in list)
-                {
-                    this.AddMarker(marker.Location.Latitude, marker.Location.Longitude);
-                }
+                this.AddMarkers(list);
             }
         }
     }
