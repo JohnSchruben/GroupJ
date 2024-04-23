@@ -59,7 +59,7 @@ namespace SafeSkate.Service
                 var xml = SafeSkateSerializer.SerializeMapMarkerInfoList(markers.ToList());
 
                 await writer.WriteAsync(xml + Environment.NewLine);
-                Console.WriteLine("Markers sent to query client.");
+                Console.WriteLine($"{markers.Count()} markers sent to query client.");
             }
             catch (Exception ex)
             {
