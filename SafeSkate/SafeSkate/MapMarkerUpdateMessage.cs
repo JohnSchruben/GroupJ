@@ -10,5 +10,8 @@ namespace SafeSkate
 
         [DataMember]
         public MapMarkerInfo Info { get; set; }
+
+        [DataMember]
+        public Guid ProcessId { get; set; } 
     }
 }

@@ -4,15 +4,17 @@
     ///   Ticket #5 The Service Types
     /// </summary>
     [Serializable]
-    public class MapMarkerInfo
+    public class MapMarkerInfo : IEquatable<MapMarkerInfo>
     {
         private Coordinate location;
         private string uploader;
         private DateTime timeUploaded;
         private Severity severity;
+        private Guid id;
 
         public MapMarkerInfo()
         { 
+            this.Id = Guid.NewGuid();
         }
 
         public MapMarkerInfo(Coordinate location, string uploader, DateTime timeUploaded, Severity severity)
@@ -21,6 +23,7 @@
             this.uploader = uploader;
             this.timeUploaded = timeUploaded;
             this.severity = severity;
+            this.Id = Guid.NewGuid();
         }
 
         public Coordinate Location
@@ -45,6 +48,23 @@
         {
             get => this.severity;
             set => this.severity = value;
+        }
+        public Guid Id
+        {
+            get => this.id;
+            set => this.id = value;
+        }
+
+        public bool Equals(MapMarkerInfo? other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+
+            return this.Location.Equals(other.Location) &&
+                   this.Id.Equals(other.Id) &&
+                   string.Equals(this.Uploader, other.Uploader) &&
+                   this.TimeUploaded == other.TimeUploaded &&
+                   this.Severity == other.Severity;
         }
 
         public override string ToString()
