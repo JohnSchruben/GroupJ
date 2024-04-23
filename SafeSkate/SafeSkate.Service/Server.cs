@@ -119,7 +119,8 @@ namespace SafeSkate.Service
                             else
                             {
                                 Console.Write("Removing marker:");
-                                markers.Remove(message.Info);
+                                var marker = markers.FirstOrDefault(x => x.Location.Latitude == message.Info.Location.Latitude && x.Location.Longitude == message.Info.Location.Longitude);
+                                markers.Remove(marker);
                             }
 
                             Console.WriteLine($"total = {markers.Count}");
