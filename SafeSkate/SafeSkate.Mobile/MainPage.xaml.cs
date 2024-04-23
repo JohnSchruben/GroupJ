@@ -18,10 +18,6 @@ namespace SafeSkate.Mobile
         public MainPage()
         {
             InitializeComponent();
-            //this.BindingContextChanged += MainPage_BindingContextChanged;
-            //markers = new ObservableCollection<MapMarkerInfo>(ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.MapMarkerInfos);
-            //this.map.ItemsSource = this.markers;
-            //ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.MapMarkerInfos.CollectionChanged += this.MapMarkerInfos_CollectionChanged;
             //CheckAndRequestLocationPermission();
             //GetCurrentLocation();
 
@@ -57,10 +53,6 @@ namespace SafeSkate.Mobile
             });
         }
 
-        private void MapPinClicked(MapPin pin)
-        {
-            // Handle pin click
-        }
         public async Task CheckAndRequestLocationPermission()
         {
             var status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
@@ -116,12 +108,6 @@ namespace SafeSkate.Mobile
         private void map_MapClicked(object sender, MapClickedEventArgs e)
         {
             this.mainPageViewModel.AddMarkerViewModel.LoadMarker(new Coordinate(e.Location.Latitude, e.Location.Longitude, 10));
-        }
-
-        private void Pin_MarkerClicked(object sender, PinClickedEventArgs e)
-        {
-            MapMarkerInfo mapMarkerInfo = ((Pin)sender).BindingContext as MapMarkerInfo;
-            ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.RemoveMapMarkerInfo(mapMarkerInfo);
         }
     }
 }

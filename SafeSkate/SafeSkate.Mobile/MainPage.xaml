@@ -11,31 +11,10 @@
     </ContentPage.Resources>
     <Grid>
         <local:AddMarkerView x:Name="addMarkerView"/>
-            <local:MapEx x:Name="map" 
+        <local:MapEx x:Name="map" 
               CustomPins="{Binding Pins}"
               MapClicked="map_MapClicked"
               VerticalOptions="CenterAndExpand"
-              HorizontalOptions="CenterAndExpand">
-                <!--<x:Arguments>
-                    <maps:MapSpan>
-                        <x:Arguments>
-                            <sensors:Location>
-                                <x:Arguments>
-                                    <x:Double>35.207554</x:Double>
-                                    <x:Double>-97.444606</x:Double>
-                                </x:Arguments>
-                            </sensors:Location>
-                            <x:Double>0.027163</x:Double>
-                            <x:Double>0.026608</x:Double>
-                        </x:Arguments>
-                    </maps:MapSpan>
-                </x:Arguments>-->
-                <!--<maps:Map.ItemTemplate>
-                    <DataTemplate>
-                        <maps:Pin MarkerClicked="Pin_MarkerClicked" Location="{Binding Location, Converter={StaticResource PositionToLocationConverter}}"
-                              Label="{Binding Uploader}" />
-                    </DataTemplate>
-                </maps:Map.ItemTemplate>-->
-            </local:MapEx>
+              HorizontalOptions="CenterAndExpand"/>
     </Grid>
 </ContentPage>
