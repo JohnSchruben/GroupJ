@@ -18,7 +18,7 @@ namespace SafeSkate.Service
         private ObservableCollection<MapMarkerInfo> markers;
         private Thread thread;
 
-        public void StartServer(int port, ref ObservableCollection<MapMarkerInfo> markers)
+        public void StartServer(int port, ObservableCollection<MapMarkerInfo> markers)
         {
             this.port = port;
             this.markers = markers;

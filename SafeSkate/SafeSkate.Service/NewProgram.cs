@@ -39,7 +39,7 @@ namespace SafeSkate.Service
 
             Console.WriteLine($"starting service host on {ServiceTypeProvider.ServerIp}");
 
-            server.StartServer(ServiceTypeProvider.UpdatePort, ref markers);
+            server.StartServer(ServiceTypeProvider.UpdatePort, markers);
 
             Task queryServerTask = RunQueryServerAsync(ServiceTypeProvider.QueryPort);
 
