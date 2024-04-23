@@ -12,7 +12,8 @@ namespace SafeSkate.Mobile.Platforms.Android
 {
     public class CustomMapHandler : MapHandler
     {
-        private const int _iconSize = 60;
+        private const int width = 60;
+        private const int height = 92;
 
         private readonly Dictionary<string, BitmapDescriptor> _iconMap = [];
 
@@ -65,7 +66,7 @@ namespace SafeSkate.Mobile.Platforms.Android
 
             var drawable = Context.Resources.GetIdentifier(icon, "drawable", Context.PackageName);
             var bitmap = BitmapFactory.DecodeResource(Context.Resources, drawable);
-            var scaled = Bitmap.CreateScaledBitmap(bitmap, _iconSize, _iconSize, false);
+            var scaled = Bitmap.CreateScaledBitmap(bitmap, width, height, false);
             bitmap.Recycle();
             var descriptor = BitmapDescriptorFactory.FromBitmap(scaled);
 
