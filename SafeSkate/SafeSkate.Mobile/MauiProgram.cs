@@ -15,7 +15,14 @@ namespace SafeSkate.Mobile
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-                }).UseMauiMaps();
+                }).ConfigureMauiHandlers(handlers => 
+                {
+#if ANDROID
+                    handlers.AddHandler<Microsoft.Maui.Controls.Maps.Map, Platforms.Android.CustomMapHandler>();
+#elif IOS
+                    handlers.AddHandler<Microsoft.Maui.Controls.Maps.Map, SafeSkate.Mobile.Platforms.iOS.CustomMapHandler>();
+#endif
+                });
 
 #if DEBUG
     		builder.Logging.AddDebug();

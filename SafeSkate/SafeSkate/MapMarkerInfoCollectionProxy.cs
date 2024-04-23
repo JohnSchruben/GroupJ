@@ -56,7 +56,7 @@ namespace SafeSkate
         {
             if (this.processId == message.ProcessId)
             {
-
+                return;
             }
 
             // we received an update from someone else. Handle it to get up to date.

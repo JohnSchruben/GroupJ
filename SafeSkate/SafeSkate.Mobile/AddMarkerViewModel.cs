@@ -37,10 +37,10 @@ namespace SafeSkate.Mobile
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public int Severity { get; private set; }
-        public string Uploader { get; private set; }
-
         public event PropertyChangedEventHandler? PropertyChanged;
+        public int Severity { get; set; }
+        public string Uploader { get; set; }
+
 
         public void LoadMarker(Coordinate coordinate)
         {

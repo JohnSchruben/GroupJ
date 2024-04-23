@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:ss="clr-namespace:SafeSkate;assembly=SafeSkate"
              xmlns:local="clr-namespace:SafeSkate.Mobile"
              x:Class="SafeSkate.Mobile.AddMarkerView"
-             Title="NewPage1" IsVisible="{Binding Visibility, FallbackValue=false}">
-    <VerticalStackLayout>
+             IsVisible="{Binding Visibility, FallbackValue=false}">
+    <VerticalStackLayout Background="Magenta">
         <Entry
           MaxLength="20"
           Text="{Binding Uploader, Mode=TwoWay}" />
@@ -13,11 +13,11 @@
             <StackLayout.Resources>
                 <local:ComparisonConverter x:Key="ComparisonConverter" />
             </StackLayout.Resources>
-            <RadioButton IsChecked="{Binding Path=Severity, Converter={StaticResource ComparisonConverter}, ConverterParameter='1'}" Content="Low"/>
-            <RadioButton IsChecked="{Binding Path=Severity, Converter={StaticResource ComparisonConverter}, ConverterParameter='2'}" Content="Medium"/>
-            <RadioButton IsChecked="{Binding Path=Severity, Converter={StaticResource ComparisonConverter}, ConverterParameter='3'}" Content="High"/>
-            <RadioButton IsChecked="{Binding Path=Severity, Converter={StaticResource ComparisonConverter}, ConverterParameter='4'}" Content="Ultra"/>
+            <RadioButton IsChecked="{Binding Path=Severity, Mode=TwoWay, Converter={StaticResource ComparisonConverter}, ConverterParameter='0'}" Content="Low"/>
+            <RadioButton IsChecked="{Binding Path=Severity, Mode=TwoWay, Converter={StaticResource ComparisonConverter}, ConverterParameter='1'}" Content="Medium"/>
+            <RadioButton IsChecked="{Binding Path=Severity, Mode=TwoWay, Converter={StaticResource ComparisonConverter}, ConverterParameter='2'}" Content="High"/>
+            <RadioButton IsChecked="{Binding Path=Severity, Mode=TwoWay, Converter={StaticResource ComparisonConverter}, ConverterParameter='3'}" Content="Ultra"/>
         </StackLayout>
         <Button Clicked="Button_Clicked" Text="Upload"></Button>
     </VerticalStackLayout>
-</ContentPage>
+</ContentView>

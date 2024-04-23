@@ -1,6 +1,6 @@
 namespace SafeSkate.Mobile;
 
-public partial class AddMarkerView : ContentPage
+public partial class AddMarkerView : ContentView
 {
     private AddMarkerViewModel viewModel;
 

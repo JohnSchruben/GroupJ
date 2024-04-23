@@ -11,17 +11,12 @@
     </ContentPage.Resources>
     <Grid>
         <local:AddMarkerView x:Name="addMarkerView"/>
-
-        <VerticalStackLayout
-            Padding="5,0"
-            Spacing="5">
-            <maps:Map x:Name="map" 
-              WidthRequest="400"
-              HeightRequest="750"
+            <local:MapEx x:Name="map" 
+              CustomPins="{Binding Pins}"
               MapClicked="map_MapClicked"
-              VerticalOptions="FillAndExpand"
-              HorizontalOptions="FillAndExpand">
-                <x:Arguments>
+              VerticalOptions="CenterAndExpand"
+              HorizontalOptions="CenterAndExpand">
+                <!--<x:Arguments>
                     <maps:MapSpan>
                         <x:Arguments>
                             <sensors:Location>
@@ -34,14 +29,13 @@
                             <x:Double>0.026608</x:Double>
                         </x:Arguments>
                     </maps:MapSpan>
-                </x:Arguments>
-                <maps:Map.ItemTemplate>
+                </x:Arguments>-->
+                <!--<maps:Map.ItemTemplate>
                     <DataTemplate>
                         <maps:Pin MarkerClicked="Pin_MarkerClicked" Location="{Binding Location, Converter={StaticResource PositionToLocationConverter}}"
                               Label="{Binding Uploader}" />
                     </DataTemplate>
-                </maps:Map.ItemTemplate>
-            </maps:Map>
-        </VerticalStackLayout>
+                </maps:Map.ItemTemplate>-->
+            </local:MapEx>
     </Grid>
 </ContentPage>

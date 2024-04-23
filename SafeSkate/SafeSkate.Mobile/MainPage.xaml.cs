@@ -14,18 +14,25 @@ namespace SafeSkate.Mobile
         private int count = 0;
         private ObservableCollection<MapMarkerInfo> markers = new ObservableCollection<MapMarkerInfo>();
         private MainPageViewModel mainPageViewModel;
+
         public MainPage()
         {
             InitializeComponent();
             //this.BindingContextChanged += MainPage_BindingContextChanged;
-            markers = new ObservableCollection<MapMarkerInfo>(ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.MapMarkerInfos);
-            this.map.ItemsSource = this.markers;
-            ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.MapMarkerInfos.CollectionChanged += this.MapMarkerInfos_CollectionChanged;
-            CheckAndRequestLocationPermission();
+            //markers = new ObservableCollection<MapMarkerInfo>(ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.MapMarkerInfos);
+            //this.map.ItemsSource = this.markers;
+            //ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.MapMarkerInfos.CollectionChanged += this.MapMarkerInfos_CollectionChanged;
+            //CheckAndRequestLocationPermission();
             //GetCurrentLocation();
 
             this.mainPageViewModel = this.BindingContext as MainPageViewModel;
             this.addMarkerView.BindingContext = this.mainPageViewModel.AddMarkerViewModel;
+
+            Location centerLocation = new Location(35.207554, -97.444606);
+
+            MapSpan mapSpan = MapSpan.FromCenterAndRadius(centerLocation, Distance.FromKilometers(0.5));
+
+            map.MoveToRegion(mapSpan);
         }
 
         [Obsolete]
@@ -50,6 +57,10 @@ namespace SafeSkate.Mobile
             });
         }
 
+        private void MapPinClicked(MapPin pin)
+        {
+            // Handle pin click
+        }
         public async Task CheckAndRequestLocationPermission()
         {
             var status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
