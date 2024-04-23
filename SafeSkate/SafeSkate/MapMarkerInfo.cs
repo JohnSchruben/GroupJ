@@ -12,7 +12,8 @@
         private Severity severity;
 
         public MapMarkerInfo()
-        { }
+        { 
+        }
 
         public MapMarkerInfo(Coordinate location, string uploader, DateTime timeUploaded, Severity severity)
         {

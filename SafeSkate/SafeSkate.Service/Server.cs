@@ -18,7 +18,7 @@ namespace SafeSkate.Service
         private ObservableCollection<MapMarkerInfo> markers;
         private Thread thread;
 
-        public void StartServer(int port, ObservableCollection<MapMarkerInfo> markers)
+        public void StartServer(int port, ref ObservableCollection<MapMarkerInfo> markers)
         {
             this.port = port;
             this.markers = markers;
@@ -117,7 +117,8 @@ namespace SafeSkate.Service
                             }
                             else
                             {
-                                markers.Remove(message.Info);   
+                                markers.Remove(message.Info);
+                                Console.WriteLine("Removing marker");
                             }
 
                             BroadcastClients(strRecv);

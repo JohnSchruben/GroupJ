@@ -91,4 +91,16 @@
 	  <ProjectReference Include="..\SafeSkate\SafeSkate.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Compile Update="AddMarkerView.xaml.cs">
+	    <DependentUpon>AddMarkerView.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="AddMarkerView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
 </Project>

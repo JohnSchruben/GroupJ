@@ -20,11 +20,6 @@ namespace SafeSkate
         {
             // don't add if it's a duplicate or if its null.
             var list = new List<MapMarkerInfo>(this.mapMarkerInfos.ToList().RemoveAll(x => x == null));  
-            if (list.Any(x => x == null))
-            {
-                list.RemoveAll(x => x == mapMarkerInfo);    
-                return false;
-            }
             if (mapMarkerInfo != null && !list.Any(x => x.Equals(mapMarkerInfo)))
             {
                 mapMarkerInfos.Add(mapMarkerInfo);
