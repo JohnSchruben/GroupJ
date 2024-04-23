@@ -39,6 +39,7 @@ namespace SafeSkate
             {
                 var message = new MapMarkerUpdateMessage
                 {
+                    IsAdded = false,
                     Info = mapMarkerInfo,
                 };
 

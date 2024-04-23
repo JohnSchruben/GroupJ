@@ -113,12 +113,13 @@ namespace SafeSkate.Service
                         {
                             if (message.IsAdded)
                             {
+                                Console.WriteLine("Adding marker");
                                 markers.Add(message.Info);
                             }
                             else
                             {
-                                markers.Remove(message.Info);
                                 Console.WriteLine("Removing marker");
+                                markers.Remove(message.Info);
                             }
 
                             BroadcastClients(strRecv);
