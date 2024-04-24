@@ -59,5 +59,10 @@ namespace SafeSkate.Mobile
             this.model.AddMapMarkerInfo(this.newMarker);
             this.Visibility = false;
         }
+
+        public void HideUI()
+        {
+            this.Visibility = false;
+        }
     }
 }
