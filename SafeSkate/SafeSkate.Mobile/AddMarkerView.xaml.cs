@@ -27,8 +27,13 @@ public partial class AddMarkerView : ContentView
         this.ZIndex++;
     }
 
-    private void Button_Clicked(object sender, EventArgs e)
+    private void Upload_Clicked(object sender, EventArgs e)
     {
         this.viewModel.SubmitMarker();
+    }
+
+    private void Cancel_Clicked(object sender, EventArgs e)
+    {
+        this.viewModel.HideUI();
     }
 }

@@ -18,6 +18,7 @@
             <RadioButton IsChecked="{Binding Path=Severity, Mode=TwoWay, Converter={StaticResource ComparisonConverter}, ConverterParameter='2'}" Content="High"/>
             <RadioButton IsChecked="{Binding Path=Severity, Mode=TwoWay, Converter={StaticResource ComparisonConverter}, ConverterParameter='3'}" Content="Ultra"/>
         </StackLayout>
-        <Button Clicked="Button_Clicked" Text="Upload"></Button>
+        <Button Clicked="Upload_Clicked" Text="Upload"></Button>
+        <Button Clicked="Cancel_Clicked" Text="Cancel"></Button>
     </VerticalStackLayout>
 </ContentView>
