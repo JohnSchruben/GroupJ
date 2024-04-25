@@ -11,6 +11,7 @@
     </ContentPage.Resources>
     <Grid>
         <local:AddMarkerView x:Name="addMarkerView"/>
+        <local:EditMarkerView x:Name="editMarkerView"/>
         <local:MapEx x:Name="map" 
               CustomPins="{Binding Pins}"
               MapClicked="map_MapClicked"

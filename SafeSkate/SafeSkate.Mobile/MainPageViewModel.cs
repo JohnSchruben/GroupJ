@@ -14,15 +14,17 @@ namespace SafeSkate.Mobile
     {
         private MapMarkerInfoCollectionProxy model;
         private AddMarkerViewModel addMarkerViewModel;
-        public MainPageViewModel(MapMarkerInfoCollectionProxy model, AddMarkerViewModel addMarkerViewModel)
+        private EditMarkerViewModel editMarkerViewModel;
+        public MainPageViewModel(MapMarkerInfoCollectionProxy model, AddMarkerViewModel addMarkerViewModel, EditMarkerViewModel editMarkerViewModel)
         {
             this.model = model;
             this.addMarkerViewModel = addMarkerViewModel;
+            this.editMarkerViewModel = editMarkerViewModel;
             Pins = new ObservableCollection<MapPin>();
 
             foreach(var marker in this.model.MapMarkerInfos)
             {
-                this.Pins.Add(new MapPin(MapPinClicked, marker)); 
+                this.Pins.Add(new MapPin(MapPinTitleClicked, marker)); 
             }
 
             this.model.MapMarkerInfos.CollectionChanged += MapMarkerInfos_CollectionChanged;
@@ -41,7 +43,7 @@ namespace SafeSkate.Mobile
                 {
                     foreach (MapMarkerInfo markerInfo in e.NewItems)
                     {
-                        this.Pins.Add(new MapPin(MapPinClicked, markerInfo));
+                        this.Pins.Add(new MapPin(MapPinTitleClicked, markerInfo));
                     }
                 }
                 if (e.OldItems != null)
@@ -56,9 +58,9 @@ namespace SafeSkate.Mobile
 
         }
 
-        private void MapPinClicked(MapPin pin)
+        private void MapPinTitleClicked(MapPin pin)
         {
-            this.model.RemoveMapMarkerInfo(pin.Model);
+            this.EditMarkerViewModel.LoadMarker(pin.Model);
         }
 
         private ObservableCollection<MapPin> pins;
@@ -72,5 +74,6 @@ namespace SafeSkate.Mobile
         }
         public IEnumerable<MapMarkerInfo> MarkerCollection => this.model.MapMarkerInfos;
         public AddMarkerViewModel AddMarkerViewModel => this.addMarkerViewModel;
+        public EditMarkerViewModel EditMarkerViewModel => this.editMarkerViewModel;
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace SafeSkate
+﻿using System.Reflection;
+
+namespace SafeSkate
 {
     /// <summary>
     ///   Ticket #5 The Service Types
@@ -65,6 +67,13 @@
                    string.Equals(this.Uploader, other.Uploader) &&
                    this.TimeUploaded == other.TimeUploaded &&
                    this.Severity == other.Severity;
+        }
+
+        public string SeverityDescription()
+        {
+            return this.severity == Severity.FlintstonesVitamin ? "Low" :
+                this.severity == Severity.BabyAspirin ? "Medium" :
+                this.severity == Severity.Morphine ? "High" : "Ultra";
         }
 
         public override string ToString()

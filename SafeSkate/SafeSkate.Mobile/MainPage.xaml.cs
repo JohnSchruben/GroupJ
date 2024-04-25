@@ -107,7 +107,7 @@ namespace SafeSkate.Mobile
 
         private void map_MapClicked(object sender, MapClickedEventArgs e)
         {
-            this.mainPageViewModel.AddMarkerViewModel.LoadMarker(new Coordinate(e.Location.Latitude, e.Location.Longitude, 10));
+            this.mainPageViewModel.AddMarkerViewModel.GenerateMarker(new Coordinate(e.Location.Latitude, e.Location.Longitude, 10));
         }
     }
 }
