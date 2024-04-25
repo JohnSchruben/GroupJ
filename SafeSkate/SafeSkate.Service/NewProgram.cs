@@ -7,6 +7,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace SafeSkate.Service
 {
@@ -20,7 +21,7 @@ namespace SafeSkate.Service
         static Server server = new Server();
         public static void Main(string[] args)
         {
-            // Defaults
+            // Default endpoints for queries and updates.
             string defaultIp = "172.214.88.163";
             int defaultUpdatePort = 9000;
             int defaultQueryPort = 9001;
@@ -31,7 +32,6 @@ namespace SafeSkate.Service
             ServiceTypeProvider.QueryPort = args.Length > 2 && int.TryParse(args[2], out int queryPort) ? queryPort : defaultQueryPort;
 
             // Default map marker list. Will turn into a file read or a database.
-            //ServiceTypeProvider.DefaultMapMarkerInfos = new List<MapMarkerInfo>
             markers = new ObservableCollection<MapMarkerInfo>
             {
                  new MapMarkerInfo(new Coordinate(35.211166, -97.441197, 10), "server", DateTime.Now, Severity.Morphine)
@@ -41,12 +41,15 @@ namespace SafeSkate.Service
 
             server.StartServer(ServiceTypeProvider.UpdatePort, markers);
 
+            // start listening for requests.
             Task queryServerTask = RunQueryServerAsync(ServiceTypeProvider.QueryPort);
-
+            
             Task.WhenAll(queryServerTask);
             Console.ReadKey();
         }
 
+        // this gets called when a client connects to the query endpoint. 
+        // It sends the map marker list back to the client. 
         static async Task HandleQueryClientAsync(TcpClient client)
         {
             try
@@ -55,7 +58,6 @@ namespace SafeSkate.Service
                 var writer = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
 
                 // send all markers upon client connection
-                //var markers = ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.MapMarkerInfos;
                 var xml = SafeSkateSerializer.SerializeMapMarkerInfoList(markers.ToList());
 
                 await writer.WriteAsync(xml + Environment.NewLine);
@@ -71,12 +73,14 @@ namespace SafeSkate.Service
             }
         }
 
+        // listinging for connections from clients. 
         static async Task RunQueryServerAsync(int port)
         {
             var listener = new TcpListener(IPAddress.Any, port);
             listener.Start();
             Console.WriteLine($"Query server listening on port {port}...");
 
+            // will listen forever as long as the task is running.
             while (true)
             {
                 var client = await listener.AcceptTcpClientAsync();
