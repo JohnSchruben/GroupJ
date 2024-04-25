@@ -1,7 +1,10 @@
-using System;
+﻿using System;
 
 namespace SafeSkate
 {
+    /// <summary>
+    ///   Ticket #5 The Service Types
+    /// </summary>
     [Serializable]
     public class Coordinate : IEquatable<Coordinate>
     {
@@ -43,8 +46,8 @@ namespace SafeSkate
             }
 
             return this.Latitude == other.Latitude &&
-                   this.Longitude == other.Longitude &&
-                   this.Elevation == other.Elevation;
+                this.Longitude == other.Longitude &&
+                this.Elevation == other.Elevation;
         }
 
         public override string ToString()

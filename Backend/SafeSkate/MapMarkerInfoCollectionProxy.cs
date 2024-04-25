@@ -1,3 +1,4 @@
+﻿using System;
 using System.Collections.ObjectModel;
 
 namespace SafeSkate
@@ -6,12 +7,14 @@ namespace SafeSkate
     {
         private MapMarkerInfoCollection model;
         private ServiceClient serviceClient;
+        private Guid processId;
 
         public MapMarkerInfoCollectionProxy(MapMarkerInfoCollection model, ServiceClient serviceClient)
         {
             this.model = model;
             this.serviceClient = serviceClient;
             this.serviceClient.MapMarkerUpdateReceived += this.ServiceClient_MapMarkerUpdateReceived;
+            this.processId = Guid.NewGuid();
         }
 
         public ObservableCollection<MapMarkerInfo> MapMarkerInfos => this.model.MapMarkerInfos;
@@ -25,6 +28,7 @@ namespace SafeSkate
                 {
                     IsAdded = true,
                     Info = mapMarkerInfo,
+                    ProcessId = processId   
                 };
 
                 // make and publish the update.
@@ -39,7 +43,9 @@ namespace SafeSkate
             {
                 var message = new MapMarkerUpdateMessage
                 {
+                    IsAdded = false,
                     Info = mapMarkerInfo,
+                    ProcessId = processId
                 };
 
                 // make and publish the update.
@@ -49,6 +55,11 @@ namespace SafeSkate
 
         private void ServiceClient_MapMarkerUpdateReceived(MapMarkerUpdateMessage message)
         {
+            if (this.processId == message.ProcessId)
+            {
+                return;
+            }
+
             // we received an update from someone else. Handle it to get up to date.
             if (message.IsAdded)
             {

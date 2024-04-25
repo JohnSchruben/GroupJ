@@ -1,12 +1,16 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace SafeSkate
 {
+    /// <summary>
+    ///   Ticket #6 The Service
+    /// </summary>
     public class ServiceClient
     {
         private readonly string serverIp;
@@ -109,7 +113,7 @@ namespace SafeSkate
                     if (stream.DataAvailable)
                     {
                         this.reader = new StreamReader(stream, Encoding.UTF8);
-                        int bufferSize = 4096;
+                        int bufferSize = ushort.MaxValue;
                         char[] buffer = new char[bufferSize];
 
                         int bytesRead;
@@ -120,7 +124,7 @@ namespace SafeSkate
                             var markerInfo = SafeSkateSerializer.DeserializeMapMarkerUpdateMessage(receivedData);
                             if (markerInfo != null)
                             {
-                                 this.MapMarkerUpdateReceived?.Invoke(markerInfo);
+                                this.MapMarkerUpdateReceived?.Invoke(markerInfo);
                             }
                         }
                     }
