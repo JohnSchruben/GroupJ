@@ -89,7 +89,7 @@ namespace SafeSkate.Mobile.Platforms.Android
         private void UpdateMarker(MapPin pin)
         {
             var markerOption = new MarkerOptions();
-            markerOption.SetTitle(string.Empty);
+            markerOption.SetTitle(pin.Model.SeverityDescription() + " (click to edit)");
             markerOption.SetIcon(GetIcon(pin.Icon));
             markerOption.SetPosition(new LatLng(pin.Position.Latitude, pin.Position.Longitude));
             var marker = Map.AddMarker(markerOption);
@@ -126,7 +126,15 @@ namespace SafeSkate.Mobile.Platforms.Android
         {
             if (MarkerMap.TryGetValue(args.Marker.Id, out (Marker Marker, MapPin Pin) value))
             {
-                value.Pin.ClickedCommand?.Execute(null);
+                value.Marker.ShowInfoWindow();
+            }
+        }
+
+        public void InfoWindowClick(object sender, GoogleMap.InfoWindowClickEventArgs args)
+        {
+            if (MarkerMap.TryGetValue(args.Marker.Id, out (Marker Marker, MapPin Pin) value))
+            {
+                value.Pin.EditCommand?.Execute(null);
             }
         }
     }
@@ -144,6 +152,7 @@ namespace SafeSkate.Mobile.Platforms.Android
         {
             mapHandler.UpdateValue(nameof(MapEx.CustomPins));
             googleMap.MarkerClick += mapHandler.MarkerClick;
+            googleMap.InfoWindowClick += mapHandler.InfoWindowClick;
         }
     }
 }

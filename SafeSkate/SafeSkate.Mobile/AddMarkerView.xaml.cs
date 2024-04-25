@@ -34,6 +34,6 @@ public partial class AddMarkerView : ContentView
 
     private void Cancel_Clicked(object sender, EventArgs e)
     {
-        this.viewModel.HideUI();
+        this.viewModel.CloseUI();
     }
 }

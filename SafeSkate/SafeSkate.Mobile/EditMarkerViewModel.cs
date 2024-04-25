@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Maui.Controls.Maps;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -7,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace SafeSkate.Mobile
 {
-    public class AddMarkerViewModel : INotifyPropertyChanged
+    public class EditMarkerViewModel : INotifyPropertyChanged
     {
         private MapMarkerInfoCollectionProxy model;
-        private MapMarkerInfo newMarker;
+        private MapMarkerInfo currentMarker;
         private bool visibility;
 
-        public AddMarkerViewModel(MapMarkerInfoCollectionProxy model)
+        public EditMarkerViewModel(MapMarkerInfoCollectionProxy model)
         {
             this.model = model;
             this.Uploader = "uploader";
@@ -27,7 +28,7 @@ namespace SafeSkate.Mobile
                 if (this.visibility != value)
                 {
                     this.visibility = value;
-                    this.OnPropertyChanged(nameof(this.Visibility));    
+                    this.OnPropertyChanged(nameof(this.Visibility));
                 }
             }
         }
@@ -42,21 +43,27 @@ namespace SafeSkate.Mobile
         public string Uploader { get; set; }
 
 
-        public void GenerateMarker(Coordinate coordinate)
+        public void LoadMarker(MapMarkerInfo markerInfo)
         {
             this.Visibility = true;
-            this.newMarker = new MapMarkerInfo()
-            {
-                Location = coordinate,
-            };
+            this.currentMarker = markerInfo;
+            this.Severity = (int)markerInfo.Severity;
+            this.Uploader = markerInfo.Uploader;
         }
 
-        public void SubmitMarker()
+        public void SaveMarker()
         {
-            this.newMarker.Severity = (Severity)this.Severity;
-            this.newMarker.Uploader = this.Uploader;
-            this.newMarker.TimeUploaded = DateTime.Now;
-            this.model.AddMapMarkerInfo(this.newMarker);
+            this.model.RemoveMapMarkerInfo(currentMarker);
+            this.currentMarker.Severity = (Severity)this.Severity;
+            this.currentMarker.Uploader = this.Uploader;
+            this.currentMarker.TimeUploaded = DateTime.Now;
+            this.model.AddMapMarkerInfo(this.currentMarker);
+            this.Visibility = false;
+        }
+
+        public void DeleteMarker()
+        {
+            this.model.RemoveMapMarkerInfo(currentMarker);
             this.Visibility = false;
         }
 
