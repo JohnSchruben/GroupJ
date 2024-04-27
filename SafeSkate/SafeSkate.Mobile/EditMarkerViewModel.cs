@@ -17,7 +17,7 @@ namespace SafeSkate.Mobile
         public EditMarkerViewModel(MapMarkerInfoCollectionProxy model)
         {
             this.model = model;
-            this.Uploader = "uploader";
+            this.Description = "Hazard";
         }
 
         public bool Visibility
@@ -40,7 +40,7 @@ namespace SafeSkate.Mobile
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public int Severity { get; set; }
-        public string Uploader { get; set; }
+        public string Description { get; set; }
 
 
         public void LoadMarker(MapMarkerInfo markerInfo)
@@ -48,14 +48,15 @@ namespace SafeSkate.Mobile
             this.Visibility = true;
             this.currentMarker = markerInfo;
             this.Severity = (int)markerInfo.Severity;
-            this.Uploader = markerInfo.Uploader;
+            this.Description = markerInfo.Description;
         }
 
         public void SaveMarker()
         {
             this.model.RemoveMapMarkerInfo(currentMarker);
             this.currentMarker.Severity = (Severity)this.Severity;
-            this.currentMarker.Uploader = this.Uploader;
+            this.currentMarker.Uploader = "User";
+            this.currentMarker.Description = this.Description;
             this.currentMarker.TimeUploaded = DateTime.Now;
             this.model.AddMapMarkerInfo(this.currentMarker);
             this.Visibility = false;

@@ -10,6 +10,7 @@ namespace SafeSkate
     {
         private Coordinate location;
         private string uploader;
+        private string description = "Hazard";
         private DateTime timeUploaded;
         private Severity severity;
         private Guid id;
@@ -38,6 +39,12 @@ namespace SafeSkate
         {
             get => this.uploader;
             set => this.uploader = value;
+        }
+
+        public string Description
+        {
+            get => this.description;
+            set => this.description = value;
         }
 
         public DateTime TimeUploaded

@@ -2,6 +2,7 @@
 using Microsoft.Maui.Devices.Sensors;
 using Microsoft.Maui.Maps;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using Map = Microsoft.Maui.Controls.Maps.Map;
 
 namespace SafeSkate.Mobile
@@ -29,6 +30,9 @@ namespace SafeSkate.Mobile
             MapSpan mapSpan = MapSpan.FromCenterAndRadius(centerLocation, Distance.FromKilometers(0.5));
 
             map.MoveToRegion(mapSpan);
+
+            addButton.IsVisible = true;
+            cancelButton.IsVisible = false;
         }
 
         [Obsolete]
@@ -107,7 +111,24 @@ namespace SafeSkate.Mobile
 
         private void map_MapClicked(object sender, MapClickedEventArgs e)
         {
-            this.mainPageViewModel.AddMarkerViewModel.GenerateMarker(new Coordinate(e.Location.Latitude, e.Location.Longitude, 10));
+            if (!this.addButton.IsVisible)
+            {
+                this.mainPageViewModel.AddMarkerViewModel.GenerateMarker(new Coordinate(e.Location.Latitude, e.Location.Longitude, 10));
+                this.addButton.IsVisible = true;
+                this.cancelButton.IsVisible = false;
+            }
+        }
+
+        private void Add_Clicked(object sender, EventArgs e)
+        {
+            addButton.IsVisible = false;
+            cancelButton.IsVisible = true;
+        }
+
+        private void Cancel_Clicked(object sender, EventArgs e)
+        {
+            addButton.IsVisible = true;
+            cancelButton.IsVisible = false;
         }
     }
 }
