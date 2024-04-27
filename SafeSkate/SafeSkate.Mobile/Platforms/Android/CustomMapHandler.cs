@@ -89,7 +89,8 @@ namespace SafeSkate.Mobile.Platforms.Android
         private void UpdateMarker(MapPin pin)
         {
             var markerOption = new MarkerOptions();
-            markerOption.SetTitle(pin.Model.SeverityDescription() + " (click to edit)");
+            markerOption.SetTitle(pin.Model.SeverityDescription() + ": " + pin.Model.Description);
+            markerOption.SetSnippet("(click to edit)");
             markerOption.SetIcon(GetIcon(pin.Icon));
             markerOption.SetPosition(new LatLng(pin.Position.Latitude, pin.Position.Longitude));
             var marker = Map.AddMarker(markerOption);

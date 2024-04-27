@@ -16,7 +16,7 @@ namespace SafeSkate.Mobile
         public AddMarkerViewModel(MapMarkerInfoCollectionProxy model)
         {
             this.model = model;
-            this.Uploader = "uploader";
+            this.Description = "Hazard";
         }
 
         public bool Visibility
@@ -39,7 +39,7 @@ namespace SafeSkate.Mobile
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public int Severity { get; set; }
-        public string Uploader { get; set; }
+        public string Description { get; set; }
 
 
         public void GenerateMarker(Coordinate coordinate)
@@ -54,7 +54,8 @@ namespace SafeSkate.Mobile
         public void SubmitMarker()
         {
             this.newMarker.Severity = (Severity)this.Severity;
-            this.newMarker.Uploader = this.Uploader;
+            this.newMarker.Uploader = "User";
+            this.newMarker.Description = this.Description;
             this.newMarker.TimeUploaded = DateTime.Now;
             this.model.AddMapMarkerInfo(this.newMarker);
             this.Visibility = false;
