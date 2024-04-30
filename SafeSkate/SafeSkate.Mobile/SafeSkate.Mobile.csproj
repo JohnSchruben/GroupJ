@@ -76,21 +76,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-<<<<<<< Updated upstream
+
 	  <MauiAsset Remove="Resources\Raw\sound_1.mp3" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <None Remove="Platforms\Android\Resources\raw\sound_1.mp3" />
 	  <None Remove="Resources\Raw\sound_1.mp3" />
-=======
-	  <COMReference Include="{bee4bfec-6683-3e67-9167-3c0cbc68f40a}">
-	    <WrapperTool>tlbimp</WrapperTool>
-	    <VersionMinor>4</VersionMinor>
-	    <VersionMajor>2</VersionMajor>
-	    <Guid>bee4bfec-6683-3e67-9167-3c0cbc68f40a</Guid>
-	  </COMReference>
->>>>>>> Stashed changes
+
 	</ItemGroup>
 
 	<ItemGroup>

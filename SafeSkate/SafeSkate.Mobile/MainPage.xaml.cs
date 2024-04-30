@@ -39,6 +39,7 @@ namespace SafeSkate.Mobile
             cancelButton.IsVisible = false;
 
             ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.MapMarkerInfos.CollectionChanged += this.MapMarkerInfos_CollectionChanged;
+            GetCurrentLocation();
         }
 
         private void PlayAlertSound()
@@ -46,8 +47,8 @@ namespace SafeSkate.Mobile
             try
             {
                 // will only work for android.
-                var audioPlayer = new SafeSkate.Mobile.Platforms.Android.AudioPlayer();
-                audioPlayer.PlaySound();
+                //var audioPlayer = new SafeSkate.Mobile.Platforms.Android.AudioPlayer();
+                //audioPlayer.PlaySound();
                 //DependencyService.Get<IAudioPlayer>().PlaySound();
             }
             catch (Exception ex)
@@ -56,7 +57,7 @@ namespace SafeSkate.Mobile
             }
 
 
-            Add_Current_Location();
+            
 
         }
 
@@ -206,6 +207,7 @@ namespace SafeSkate.Mobile
                 //Add marker
                 //Begin updating location
                 await DisplayAlert("User Coordinates", currentLocation.Latitude.ToString() + "," + currentLocation.Longitude.ToString(), "OK");
+                PlayAlertSound();
                 OnStartListening();
             }
             else
