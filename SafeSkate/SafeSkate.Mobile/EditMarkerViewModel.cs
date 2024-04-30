@@ -53,13 +53,18 @@ namespace SafeSkate.Mobile
 
         public void SaveMarker()
         {
-            this.model.RemoveMapMarkerInfo(currentMarker);
-            this.currentMarker.Severity = (Severity)this.Severity;
-            this.currentMarker.Uploader = "User";
-            this.currentMarker.Description = this.Description;
-            this.currentMarker.TimeUploaded = DateTime.Now;
-            this.model.AddMapMarkerInfo(this.currentMarker);
-            this.Visibility = false;
+            try
+            {
+                var newMarker = new MapMarkerInfo(this.currentMarker.Location, this.Description, DateTime.Now, (Severity)this.Severity);
+                this.model.AddMapMarkerInfo(newMarker);
+                Thread.Sleep(1000);
+                this.model.RemoveMapMarkerInfo(currentMarker);
+                this.Visibility = false;
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         public void DeleteMarker()

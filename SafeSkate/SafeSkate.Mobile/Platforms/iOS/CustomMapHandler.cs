@@ -96,7 +96,12 @@ namespace SafeSkate.Mobile.Platforms.iOS
             {
                 foreach (MapPin pin in e.OldItems)
                 {
-                   // figure out how to remove.
+                    var annotation = MarkerMap.FirstOrDefault(x => x.Value == pin).Key;
+                    if (annotation != null)
+                    {
+                        PlatformView.RemoveAnnotation(annotation);
+                        MarkerMap.Remove(annotation);
+                    }
                 }
             }
         }

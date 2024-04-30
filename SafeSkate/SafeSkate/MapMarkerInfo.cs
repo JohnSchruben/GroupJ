@@ -24,6 +24,7 @@ namespace SafeSkate
         {
             this.location = location;
             this.uploader = uploader;
+            this.description = uploader;
             this.timeUploaded = timeUploaded;
             this.severity = severity;
             this.Id = Guid.NewGuid();
