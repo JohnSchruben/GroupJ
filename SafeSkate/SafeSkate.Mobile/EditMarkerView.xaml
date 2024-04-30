@@ -5,7 +5,7 @@
              xmlns:local="clr-namespace:SafeSkate.Mobile"
              x:Class="SafeSkate.Mobile.EditMarkerView"
              IsVisible="{Binding Visibility, FallbackValue=false}">
-    <VerticalStackLayout Background="Teal">
+    <VerticalStackLayout Background="AntiqueWhite">
         <Entry
           MaxLength="20"
           Text="{Binding Description, Mode=TwoWay, FallbackValue=Hazard}" />
