@@ -6,40 +6,38 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        Random random = new Random();
-        double minLatitude = 35.203977;
-        double maxLatitude = 35.211130;
-        double minLongitude = -97.441307;
-        double maxLongitude = -97.447905;
-        int processId = Process.GetCurrentProcess().Id;
-        int hashedValue = (processId % 4) + 1;
-        Severity severity = (Severity)hashedValue;
-        ServiceTypeProvider.ServerIp = "172.214.88.163";
-        //ServiceTypeProvider.ServerIp = "127.0.0.1";
-        ServiceTypeProvider.UpdatePort = 9000;
-        ServiceTypeProvider.QueryPort = 9001;
-        var model = ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy;
-        model.MapMarkerInfos.CollectionChanged += MapMarkerInfos_CollectionChanged;
-        var list = new List<MapMarkerInfo>(model.MapMarkerInfos);
-        foreach (var marker in list)
-        {
-            Console.WriteLine(marker);
-        }
-        while (true)
-        {
-            Thread.Sleep(TimeSpan.FromSeconds(1));
-            //Console.ReadKey();
-            // Generate a random latitude and longitude within the range
-            double randomLatitude = random.NextDouble() * (maxLatitude - minLatitude) + minLatitude;
-            double randomLongitude = random.NextDouble() * (maxLongitude - minLongitude) + minLongitude;
+        IProximityNotifier proximityNotifier = new ProximityNotifier();
+        proximityNotifier.OnProximityReached += ProximityNotifier_OnProximityReached;
 
-            model.AddMapMarkerInfo(
-                new MapMarkerInfo(new Coordinate(randomLatitude, randomLongitude, 10), "john's mobile client", DateTime.Now, severity));
-        }
+        // set the coordinates close to eachother.
+        Coordinate p1 = new Coordinate();
+        Coordinate p2 = new Coordinate();
+        var marker = new MapMarkerInfo()
+        {
+            Location = p2,
+        };
+
+        var markerlist = new List<MapMarkerInfo>() { marker };
+
+        // test should raise event.
+        proximityNotifier.AssessProximity(p1, markerlist);
+
+        // set coordinates far apart.
+        p1 = new Coordinate(35.207554, -97.444606, 11);
+        p2 = new Coordinate(36.208554, -98.449606, 11);
+        marker = new MapMarkerInfo()
+        {
+            Location = p2,
+        };
+
+        markerlist = new List<MapMarkerInfo>() { marker };
+
+        // test should raise event.
+        proximityNotifier.AssessProximity(p1, markerlist);
     }
 
-    private static void MapMarkerInfos_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    private static void ProximityNotifier_OnProximityReached(MapMarkerInfo obj)
     {
-        Console.WriteLine(e.NewItems[0] as MapMarkerInfo);
+        Console.WriteLine("Event raised");
     }
 }
