@@ -118,7 +118,7 @@ namespace SafeSkate.Mobile
                 if (location != null)
                 {
                     Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}");
-
+                    Thread.Sleep(TimeSpan.FromSeconds(5)); 
                     if (this.currentLocation != location)
                     {
                         this.currentLocation = location;
