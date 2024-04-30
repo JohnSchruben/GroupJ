@@ -8,7 +8,7 @@
     <VerticalStackLayout Background="Teal">
         <Entry
           MaxLength="20"
-          Text="{Binding Description, Mode=TwoWay}" />
+          Text="{Binding Description, Mode=TwoWay, FallbackValue=Hazard}" />
         <StackLayout>
             <StackLayout.Resources>
                 <local:ComparisonConverter x:Key="ComparisonConverter" />

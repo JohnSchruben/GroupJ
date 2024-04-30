@@ -28,6 +28,8 @@ namespace SafeSkate.Mobile
                 if (this.visibility != value)
                 {
                     this.visibility = value;
+                    this.OnPropertyChanged(nameof(this.Description));
+                    this.OnPropertyChanged(nameof(this.Severity));
                     this.OnPropertyChanged(nameof(this.Visibility));
                 }
             }
@@ -42,29 +44,22 @@ namespace SafeSkate.Mobile
         public int Severity { get; set; }
         public string Description { get; set; }
 
-
         public void LoadMarker(MapMarkerInfo markerInfo)
         {
-            this.Visibility = true;
             this.currentMarker = markerInfo;
             this.Severity = (int)markerInfo.Severity;
+            this.OnPropertyChanged(nameof(this.Severity));
             this.Description = markerInfo.Description;
+            this.Visibility = true;
         }
 
         public void SaveMarker()
         {
-            try
-            {
-                var newMarker = new MapMarkerInfo(this.currentMarker.Location, this.Description, DateTime.Now, (Severity)this.Severity);
-                this.model.AddMapMarkerInfo(newMarker);
-                Thread.Sleep(1000);
-                this.model.RemoveMapMarkerInfo(currentMarker);
-                this.Visibility = false;
-            }
-            catch (Exception ex)
-            {
-
-            }
+            var newMarker = new MapMarkerInfo(this.currentMarker.Location, this.Description, DateTime.Now, (Severity)this.Severity);
+            this.model.AddMapMarkerInfo(newMarker);
+            Thread.Sleep(1000);
+            this.model.RemoveMapMarkerInfo(currentMarker);
+            this.Visibility = false;
         }
 
         public void DeleteMarker()
