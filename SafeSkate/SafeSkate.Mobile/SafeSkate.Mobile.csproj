@@ -76,10 +76,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiAsset Remove="Resources\Raw\sound_1.mp3" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <None Remove="Platforms\Android\Resources\raw\sound_1.mp3" />
 	  <None Remove="Resources\Raw\sound_1.mp3" />
 	</ItemGroup>
@@ -102,7 +98,6 @@
 
 	<ItemGroup>
 	  <Resource Include="Platforms\Android\Resources\raw\sound_1.mp3" />
-	  <Resource Include="Resources\Raw\sound_1.mp3" />
 	</ItemGroup>
 
 	<ItemGroup>
