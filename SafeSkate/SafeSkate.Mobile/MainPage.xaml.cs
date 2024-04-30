@@ -37,7 +37,7 @@ namespace SafeSkate.Mobile
 
             addButton.IsVisible = true;
             cancelButton.IsVisible = false;
-<<<<<<< Updated upstream
+
             ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.MapMarkerInfos.CollectionChanged += this.MapMarkerInfos_CollectionChanged;
         }
 
@@ -54,10 +54,10 @@ namespace SafeSkate.Mobile
             {
                 Console.WriteLine($"Error playing sound: {ex.Message}");
             }
-=======
+
 
             Add_Current_Location();
->>>>>>> Stashed changes
+
         }
 
         [Obsolete]
