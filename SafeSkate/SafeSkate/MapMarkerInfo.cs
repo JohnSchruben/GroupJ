@@ -28,18 +28,6 @@ namespace SafeSkate
             this.severity = severity;
             this.Id = Guid.NewGuid();
         }
-
-        public MapMarkerInfo(Coordinate location, string uploader, string description, DateTime timeUploaded, Severity severity)
-        {
-            this.location = location;
-            this.uploader = uploader;
-            this.description = description;
-            this.timeUploaded = timeUploaded;
-            this.severity = severity;
-            this.Id = Guid.NewGuid();
-            
-
-        }
         
         
 

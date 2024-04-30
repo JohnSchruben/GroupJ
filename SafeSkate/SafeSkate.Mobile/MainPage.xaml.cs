@@ -71,7 +71,8 @@ namespace SafeSkate.Mobile
                 {
                     foreach (MapMarkerInfo markerInfo in e.NewItems)
                     {
-                        this.PlayAlertSound();
+                        this.markers.Add(markerInfo);
+                        //this.PlayAlertSound();
                     }
                 }
             });
@@ -206,8 +207,11 @@ namespace SafeSkate.Mobile
             if (currentLocation != null)
             {
                 //Add marker
-                MapMarkerInfo userLoc = new MapMarkerInfo(new Coordinate(currentLocation.Latitude,currentLocation.Longitude,10),"User","User Location",DateTime.Now,Severity.Morphine);
-                this.markers.Add(userLoc);
+                MapMarkerInfo userLoc = new MapMarkerInfo(new Coordinate(currentLocation.Latitude,currentLocation.Longitude,10),"User",DateTime.Now,Severity.BabyAspirin);
+                userLoc.Description = "Your Current Location";
+                ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.AddMapMarkerInfo(userLoc);   
+               
+             
                 //Begin updating location
                 await DisplayAlert("User Coordinates", currentLocation.Latitude.ToString() + "," + currentLocation.Longitude.ToString(), "OK");
                 //PlayAlertSound();
