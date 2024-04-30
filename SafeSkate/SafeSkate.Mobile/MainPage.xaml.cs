@@ -141,7 +141,7 @@ namespace SafeSkate.Mobile
 
                     if (this.currentLocation != location && this.isTracking)
                     {
-                        //UpdateMapRegion(location);
+                        UpdateMapRegion(location);
                     }
 
                     return GetCurrentLocation().Result;
