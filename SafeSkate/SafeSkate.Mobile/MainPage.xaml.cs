@@ -3,6 +3,7 @@ using Microsoft.Maui.Devices.Sensors;
 using Microsoft.Maui.Maps;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using Unity.Injection;
 using Map = Microsoft.Maui.Controls.Maps.Map;
 
 
@@ -22,6 +23,7 @@ namespace SafeSkate.Mobile
         private Location currentLocation;
         private CancellationTokenSource _cancelTokenSource;
         private bool _isCheckingLocation;
+        private MapMarkerInfo userLoc;
 
 
         public MainPage()
@@ -40,7 +42,7 @@ namespace SafeSkate.Mobile
             addButton.IsVisible = true;
             cancelButton.IsVisible = false;
 
-            ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.MapMarkerInfos.CollectionChanged += this.MapMarkerInfos_CollectionChanged;
+            RegisterLocationListener();
             Add_Current_Location();
         }
 
@@ -48,9 +50,14 @@ namespace SafeSkate.Mobile
         {
             try
             {
-                // will only work for android.
                 
-                //DependencyService.Get<IAudioPlayer>().PlaySound();
+                #if ANDROID
+                var audioPlayer = new SafeSkate.Mobile.Platforms.Android.AudioPlayer();
+                audioPlayer.PlaySound();
+                #elif IOS
+                DependencyService.Get<IAudioPlayer>().PlaySound();
+                #endif
+                
             }
             catch (Exception ex)
             {
@@ -71,8 +78,7 @@ namespace SafeSkate.Mobile
                 {
                     foreach (MapMarkerInfo markerInfo in e.NewItems)
                     {
-                        this.markers.Add(markerInfo);
-                        //this.PlayAlertSound();
+                        this.PlayAlertSound();
                     }
                 }
             });
@@ -89,8 +95,20 @@ namespace SafeSkate.Mobile
             // Optionally check for background location as needed:
             // var backgroundStatus = await Permissions.RequestAsync<Permissions.LocationAlways>();
         }
+        public async void RegisterLocationListener()
+        {
+            try
+            {
+                Geolocation.LocationChanged += Geolocation_LocationChanged;
+                var request = new GeolocationListeningRequest(GeolocationAccuracy.Medium);
+                await Geolocation.StartListeningForegroundAsync(request);
+            }
+            catch (Exception e)
+            {
+                // Unable to listen for location changes
+            }
+        }
 
-        
 
         public async Task<Location?> GetCurrentLocation()
         {
@@ -138,7 +156,9 @@ namespace SafeSkate.Mobile
                 string status = success
                     ? "Started listening for foreground location updates"
                     : "Couldn't start listening";
-
+                Thread.Sleep(TimeSpan.FromSeconds(1));
+                Location update = await Geolocation.GetLocationAsync();
+               
                 //Notify User that Service is started and running
                 await DisplayAlert("Status", status, "OK");
             }
@@ -148,12 +168,25 @@ namespace SafeSkate.Mobile
             }
         }
 
-       public void Geolocation_LocationChanged(object? sender, GeolocationLocationChangedEventArgs e)
+       public async void Geolocation_LocationChanged(object? sender, GeolocationLocationChangedEventArgs e)
         {
-            if(currentLocation != null)
-            currentLocation = e.Location;
+            if (currentLocation != null)
+            {
+                this.currentLocation = e.Location;
+                this.userLoc.Location.Latitude = e.Location.Latitude;
+                this.userLoc.Location.Longitude = e.Location.Longitude;
+                MapMarkerInfo temp = new MapMarkerInfo(new Coordinate(e.Location.Latitude,e.Location.Longitude,10),"User",DateTime.Now,Severity.Morphine);
+                temp.Description = "User Location";
+
+                ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.AddMapMarkerInfo(temp);
+                this.userLoc = temp;
+                Thread.Sleep(TimeSpan.FromSeconds(1));
+                this.PlayAlertSound();
+                await DisplayAlert("New User Location:", currentLocation.Latitude.ToString() + "," + currentLocation.Longitude.ToString(), "OK");
+
+            }
             else
-            currentLocation = new Location(e.Location);
+                currentLocation = new Location(e.Location);
         }
 
       public void OnStopListening()
@@ -207,8 +240,8 @@ namespace SafeSkate.Mobile
             if (currentLocation != null)
             {
                 //Add marker
-                MapMarkerInfo userLoc = new MapMarkerInfo(new Coordinate(currentLocation.Latitude,currentLocation.Longitude,10),"User",DateTime.Now,Severity.BabyAspirin);
-                userLoc.Description = "Your Current Location";
+                 this.userLoc = new MapMarkerInfo(new Coordinate(currentLocation.Latitude,currentLocation.Longitude,10),"User",DateTime.Now,Severity.BabyAspirin);
+                 this.userLoc.Description = "Your Current Location";
                 ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.AddMapMarkerInfo(userLoc);   
                
              
