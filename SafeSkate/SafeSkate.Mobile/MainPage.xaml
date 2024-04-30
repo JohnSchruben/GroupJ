@@ -25,5 +25,7 @@
             Text="Tap the Map, or Click Here to Cancel" BackgroundColor="LightSlateGray" 
             Clicked="Cancel_Clicked" 
             VerticalOptions="End" HorizontalOptions="Center" Margin="0,0,0,10" HeightRequest="40"/>
+
+        <Button x:Name="track" Text="Track" Clicked="Button_Clicked" VerticalOptions="Start" Margin="10" HorizontalOptions="Center"/>
     </Grid>
 </ContentPage>

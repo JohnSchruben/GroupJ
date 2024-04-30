@@ -12,9 +12,8 @@ namespace SafeSkate.Mobile
     /// </summary>
     public partial class MainPage : ContentPage
     {
-        private int count = 0;
-        private ObservableCollection<MapMarkerInfo> markers = new ObservableCollection<MapMarkerInfo>();
         private MainPageViewModel mainPageViewModel;
+        private bool isTracking;
 
         public MainPage()
         {
@@ -22,22 +21,30 @@ namespace SafeSkate.Mobile
 
             map.MapType = MapType.Street;
             map.IsShowingUser = true;
-            
+
+            this.mainPageViewModel = this.BindingContext as MainPageViewModel;
+            this.addMarkerView.BindingContext = this.mainPageViewModel?.AddMarkerViewModel;
+            this.model = ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxyd;
+            this.proximityNotifier = new ProximityNotifier();
+
+            this.map.MoveToRegion(MapSpan.FromCenterAndRadius(currentLocation, Distance.FromMiles(1)));
+            addButton.IsVisible = true;
+            cancelButton.IsVisible = false;
+
+            this.model.MapMarkerInfos.CollectionChanged += this.MapMarkerInfos_CollectionChanged;
+            this.proximityNotifier.OnProximityReached += this.ProximityNotifier_OnProximityReached;
+
             Task.Run(async () =>
             {
                 await CheckAndRequestLocationPermission();
                 RegisterLocationListener();
                 await GetCurrentLocation();
             });
+        }
 
-            this.mainPageViewModel = this.BindingContext as MainPageViewModel;
-            this.addMarkerView.BindingContext = this.mainPageViewModel.AddMarkerViewModel;
-            
-            this.map.MoveToRegion(MapSpan.FromCenterAndRadius(currentLocation, Distance.FromMiles(1)));
-
-            addButton.IsVisible = true;
-            cancelButton.IsVisible = false;
-            ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.MapMarkerInfos.CollectionChanged += this.MapMarkerInfos_CollectionChanged;
+        private void ProximityNotifier_OnProximityReached(MapMarkerInfo obj)
+        {
+            this.PlayAlertSound();
         }
 
         private void PlayAlertSound()
@@ -79,9 +86,6 @@ namespace SafeSkate.Mobile
             {
                 status = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
             }
-
-            // Optionally check for background location as needed:
-            // var backgroundStatus = await Permissions.RequestAsync<Permissions.LocationAlways>();
         }
 
         private Location currentLocation = new Location(35.207554, -97.444606);
@@ -100,15 +104,30 @@ namespace SafeSkate.Mobile
             }
         }
 
-        void LocationChangedEventHandler(object sender, GeolocationLocationChangedEventArgs e)
+        [Obsolete]
+        private void LocationChangedEventHandler(object sender, GeolocationLocationChangedEventArgs e)
         {
-            var location = e.Location;
-            if (this.currentLocation != location)
-            {
-                this.currentLocation = location;
-                this.map.MoveToRegion(MapSpan.FromCenterAndRadius(location, Distance.FromMiles(1)));
-            }
+            UpdateMapRegion(e.Location);
         }
+
+        [Obsolete]
+        private void UpdateMapRegion(Location location)
+        {
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                if (this.currentLocation != location)
+                {
+                    this.currentLocation = location;
+                    var currentRegion = map.VisibleRegion;
+                    var newRegion = MapSpan.FromCenterAndRadius(this.currentLocation, currentRegion.Radius);
+                    this.map.MoveToRegion(newRegion);
+                    this.proximityNotifier.AssessProximity(new Coordinate(this.currentLocation.Latitude, this.currentLocation.Longitude, 1), this.model.MapMarkerInfos);
+                }
+            });
+        }
+
+        private IProximityNotifier proximityNotifier;
+        private MapMarkerInfoCollectionProxy model;
 
         public async Task<Location> GetCurrentLocation()
         {
@@ -118,11 +137,11 @@ namespace SafeSkate.Mobile
                 if (location != null)
                 {
                     Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}");
-                    Thread.Sleep(TimeSpan.FromSeconds(5)); 
-                    if (this.currentLocation != location)
+                    Thread.Sleep(TimeSpan.FromSeconds(3));
+
+                    if (this.currentLocation != location && this.isTracking)
                     {
-                        this.currentLocation = location;
-                        this.map.MoveToRegion(MapSpan.FromCenterAndRadius(location, Distance.FromMiles(1)));
+                        UpdateMapRegion(location);
                     }
 
                     return GetCurrentLocation().Result;
@@ -164,6 +183,12 @@ namespace SafeSkate.Mobile
         {
             addButton.IsVisible = true;
             cancelButton.IsVisible = false;
+        }
+
+        private void Button_Clicked(object sender, EventArgs e)
+        {
+            this.isTracking = !this.isTracking;
+            this.track.Background = this.isTracking ? Colors.Red : addButton.Background;
         }
     }
 }
