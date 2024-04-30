@@ -16,11 +16,15 @@ namespace SafeSkate.Mobile
         private ObservableCollection<MapMarkerInfo> markers = new ObservableCollection<MapMarkerInfo>();
         private MainPageViewModel mainPageViewModel;
 
+        //For Geolocation (Used in GetCurrentLocation)
+        private Location currentLocation;
+        private CancellationTokenSource _cancelTokenSource;
+        private bool _isCheckingLocation;
+
+
         public MainPage()
         {
             InitializeComponent();
-            //CheckAndRequestLocationPermission();
-            //GetCurrentLocation();
 
             this.mainPageViewModel = this.BindingContext as MainPageViewModel;
             this.addMarkerView.BindingContext = this.mainPageViewModel.AddMarkerViewModel;
@@ -33,6 +37,7 @@ namespace SafeSkate.Mobile
 
             addButton.IsVisible = true;
             cancelButton.IsVisible = false;
+<<<<<<< Updated upstream
             ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.MapMarkerInfos.CollectionChanged += this.MapMarkerInfos_CollectionChanged;
         }
 
@@ -49,6 +54,10 @@ namespace SafeSkate.Mobile
             {
                 Console.WriteLine($"Error playing sound: {ex.Message}");
             }
+=======
+
+            Add_Current_Location();
+>>>>>>> Stashed changes
         }
 
         [Obsolete]
@@ -78,44 +87,85 @@ namespace SafeSkate.Mobile
             // var backgroundStatus = await Permissions.RequestAsync<Permissions.LocationAlways>();
         }
 
-        private Location currentLocation;
+        
 
-        public async Task<Location> GetCurrentLocation()
+        public async Task<Location?> GetCurrentLocation()
         {
             try
             {
-                Thread.Sleep(TimeSpan.FromSeconds(10));
-                var request = new GeolocationRequest(GeolocationAccuracy.Best, TimeSpan.FromSeconds(10));
-                var location = await Geolocation.GetLocationAsync(request);
+                GeolocationRequest request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
+
+                _cancelTokenSource = new CancellationTokenSource();
+
+                Location location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
+
                 if (location != null)
-                {
-                    Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}");
+                    currentLocation = location;
+                else
+                    currentLocation = new Location(location);
 
-                    if (this.currentLocation == null || this.currentLocation != location)
-                    {
-                        this.currentLocation = location;
-                        var newSpan = MapSpan.FromCenterAndRadius(this.currentLocation, Distance.FromKilometers(3)); 
-
-                        this.map.MoveToRegion(newSpan);
-                    }
-
-                    return GetCurrentLocation().Result;
-                }
             }
             catch (FeatureNotSupportedException fnsEx)
             {
-                // Handle not supported on device exception
+                CancelRequest();
+                await DisplayAlert("Unsupported HW Detected:", fnsEx.ToString(), "Exit");
             }
             catch (PermissionException pEx)
             {
-                // Handle permission exception
+                CancelRequest();
+                await DisplayAlert("Insufficent Permissions:", pEx.ToString(), "Exit");
             }
             catch (Exception ex)
             {
-                // Unable to get location
+                CancelRequest();
+                await DisplayAlert("Unable to Get Location or Other:", ex.ToString(), "Exit");
             }
 
             return null;
+        }
+
+       public async void OnStartListening()
+        {
+            try
+            {
+                Geolocation.LocationChanged += Geolocation_LocationChanged;
+                var request = new GeolocationListeningRequest(GeolocationAccuracy.Default);
+                var success = await Geolocation.StartListeningForegroundAsync(request);
+
+                string status = success
+                    ? "Started listening for foreground location updates"
+                    : "Couldn't start listening";
+
+                //Notify User that Service is started and running
+                await DisplayAlert("Status", status, "OK");
+            }
+            catch (Exception ex)
+            {
+                 await DisplayAlert("ERROR:", ex.ToString(), "Exit");
+            }
+        }
+
+       public void Geolocation_LocationChanged(object? sender, GeolocationLocationChangedEventArgs e)
+        {
+            if(currentLocation != null)
+            currentLocation = e.Location;
+            else
+            currentLocation = new Location(e.Location);
+        }
+
+      public void OnStopListening()
+      {
+            try
+            {
+                Geolocation.LocationChanged -= Geolocation_LocationChanged;
+                Geolocation.StopListeningForeground();
+                string status = "Stopped listening for foreground location updates";
+                Task.Run(async () => await DisplayAlert("Status", status, "OK"));
+            }
+            catch (Exception ex)
+            {
+                Task.Run(async () => await DisplayAlert("ERROR:", ex.ToString(), "Exit"));
+            }
         }
 
         private void map_MapClicked(object sender, MapClickedEventArgs e)
@@ -138,6 +188,34 @@ namespace SafeSkate.Mobile
         {
             addButton.IsVisible = true;
             cancelButton.IsVisible = false;
+        }
+
+        public void CancelRequest()
+        {
+            if (_isCheckingLocation && _cancelTokenSource != null && _cancelTokenSource.IsCancellationRequested == false)
+                _cancelTokenSource.Cancel();
+        }
+
+        
+        private async void Add_Current_Location()
+        {
+            await CheckAndRequestLocationPermission();
+            await GetCurrentLocation();
+            if (currentLocation != null)
+            {
+                //Add marker
+                //Begin updating location
+                await DisplayAlert("User Coordinates", currentLocation.Latitude.ToString() + "," + currentLocation.Longitude.ToString(), "OK");
+                OnStartListening();
+            }
+            else
+            {
+                await DisplayAlert("ERROR", "Failed to Add Current Location! Ensure you allowed Safeskate to use Location service!", "Exit");
+                //We failed, notify user and clean up
+            }
+                
+
+            
         }
     }
 }
