@@ -79,6 +79,7 @@ namespace SafeSkate.Mobile.Platforms.iOS
                 }
             }
         }
+        
         private void CustomPins_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
@@ -96,11 +97,12 @@ namespace SafeSkate.Mobile.Platforms.iOS
             {
                 foreach (MapPin pin in e.OldItems)
                 {
-                    var annotation = MarkerMap.FirstOrDefault(x => x.Value == pin).Key;
-                    if (annotation != null)
+                    foreach (var entry in MarkerMap)
                     {
-                        PlatformView.RemoveAnnotation(annotation);
-                        MarkerMap.Remove(annotation);
+                        if (entry.Value == pin)
+                        {
+                            PlatformView.RemoveAnnotation(entry.Key);
+                        }
                     }
                 }
             }
