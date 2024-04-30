@@ -40,10 +40,12 @@ namespace SafeSkate.Mobile
         {
             try
             {
-                // will only work for android.
+#if ANDROID
                 var audioPlayer = new SafeSkate.Mobile.Platforms.Android.AudioPlayer();
                 audioPlayer.PlaySound();
-                //DependencyService.Get<IAudioPlayer>().PlaySound();
+#elif IOS
+                DependencyService.Get<IAudioPlayer>().PlaySound();
+#endif
             }
             catch (Exception ex)
             {

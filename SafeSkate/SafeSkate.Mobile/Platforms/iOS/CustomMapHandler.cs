@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CoreLocation;
+using MapKit;
+using Microsoft.Maui.Maps.Handlers;
+using Microsoft.Maui.Maps.Platform;
+using UIKit;
 
 namespace SafeSkate.Mobile.Platforms.iOS
 {
@@ -42,7 +47,7 @@ namespace SafeSkate.Mobile.Platforms.iOS
         {
             if (MarkerMap.TryGetValue(e.View.Annotation, out MapPin value))
             {
-                value.ClickedCommand?.Execute(null);
+                value.EditCommand.Execute(null);
                 PlatformView.DeselectAnnotation(e.View.Annotation, false);
             }
         }
@@ -90,7 +95,7 @@ namespace SafeSkate.Mobile.Platforms.iOS
 
             return mapView.DequeueReusableAnnotation(customPin.Id) ?? new MKAnnotationView
             {
-                Image = GetIcon(customPin.IconSrc),
+                Image = GetIcon(customPin.Icon),
                 CanShowCallout = false
             };
         }
