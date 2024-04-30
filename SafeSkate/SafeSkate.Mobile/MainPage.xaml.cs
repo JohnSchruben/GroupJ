@@ -24,7 +24,7 @@ namespace SafeSkate.Mobile
 
             this.mainPageViewModel = this.BindingContext as MainPageViewModel;
             this.addMarkerView.BindingContext = this.mainPageViewModel?.AddMarkerViewModel;
-            this.model = ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxyd;
+            this.model = ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy;
             this.proximityNotifier = new ProximityNotifier();
 
             this.map.MoveToRegion(MapSpan.FromCenterAndRadius(currentLocation, Distance.FromMiles(1)));
@@ -115,7 +115,7 @@ namespace SafeSkate.Mobile
         {
             Device.BeginInvokeOnMainThread(() =>
             {
-                if (this.currentLocation != location)
+                if (this.currentLocation != location && this.isTracking)
                 {
                     this.currentLocation = location;
                     var currentRegion = map.VisibleRegion;
@@ -141,7 +141,7 @@ namespace SafeSkate.Mobile
 
                     if (this.currentLocation != location && this.isTracking)
                     {
-                        UpdateMapRegion(location);
+                        //UpdateMapRegion(location);
                     }
 
                     return GetCurrentLocation().Result;
