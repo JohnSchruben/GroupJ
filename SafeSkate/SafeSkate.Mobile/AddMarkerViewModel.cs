@@ -61,6 +61,7 @@ namespace SafeSkate.Mobile
             this.Visibility = false;
         }
 
+
         public void CloseUI()
         {
             this.Visibility = false;
