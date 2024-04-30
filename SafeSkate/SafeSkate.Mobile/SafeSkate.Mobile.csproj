@@ -76,6 +76,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiAsset Remove="Resources\Raw\sound_1.mp3" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Platforms\Android\Resources\raw\sound_1.mp3" />
+	  <None Remove="Resources\Raw\sound_1.mp3" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.20">
 		  <TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>
@@ -89,6 +98,11 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\SafeSkate\SafeSkate.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Resource Include="Platforms\Android\Resources\raw\sound_1.mp3" />
+	  <Resource Include="Resources\Raw\sound_1.mp3" />
 	</ItemGroup>
 
 	<ItemGroup>

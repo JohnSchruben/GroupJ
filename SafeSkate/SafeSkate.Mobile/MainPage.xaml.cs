@@ -33,6 +33,22 @@ namespace SafeSkate.Mobile
 
             addButton.IsVisible = true;
             cancelButton.IsVisible = false;
+            ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.MapMarkerInfos.CollectionChanged += this.MapMarkerInfos_CollectionChanged;
+        }
+
+        private void PlayAlertSound()
+        {
+            try
+            {
+                // will only work for android.
+                var audioPlayer = new SafeSkate.Mobile.Platforms.Android.AudioPlayer();
+                audioPlayer.PlaySound();
+                //DependencyService.Get<IAudioPlayer>().PlaySound();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error playing sound: {ex.Message}");
+            }
         }
 
         [Obsolete]
@@ -44,14 +60,7 @@ namespace SafeSkate.Mobile
                 {
                     foreach (MapMarkerInfo markerInfo in e.NewItems)
                     {
-                        this.markers.Add(markerInfo);
-                    }
-                }
-                if (e.OldItems != null)
-                {
-                    foreach (MapMarkerInfo markerInfo in e.OldItems)
-                    {
-                        this.markers.Remove(markerInfo);
+                        this.PlayAlertSound();
                     }
                 }
             });
