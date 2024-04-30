@@ -54,7 +54,6 @@ namespace SafeSkate.Mobile
         public void SubmitMarker()
         {
             this.newMarker.Severity = (Severity)this.Severity;
-            this.newMarker.Uploader = "User";
             this.newMarker.Description = this.Description;
             this.newMarker.TimeUploaded = DateTime.Now;
             this.model.AddMapMarkerInfo(this.newMarker);
