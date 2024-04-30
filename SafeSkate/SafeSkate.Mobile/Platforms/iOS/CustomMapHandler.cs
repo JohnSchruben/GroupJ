@@ -68,6 +68,7 @@ namespace SafeSkate.Mobile.Platforms.iOS
         {
             if (VirtualView is MapEx mapEx)
             {
+                mapEx.CustomPins.CollectionChanged += this.CustomPins_CollectionChanged;
                 foreach (var pin in mapEx.CustomPins)
                 {
                     var marker = new MKPointAnnotation(new CLLocationCoordinate2D(pin.Position.Latitude, pin.Position.Longitude));
@@ -75,6 +76,27 @@ namespace SafeSkate.Mobile.Platforms.iOS
                     PlatformView.AddAnnotation(marker);
 
                     MarkerMap.Add(marker, pin);
+                }
+            }
+        }
+        private void CustomPins_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems != null)
+            {
+                foreach (MapPin pin in e.NewItems)
+                {
+                    var marker = new MKPointAnnotation(new CLLocationCoordinate2D(pin.Position.Latitude, pin.Position.Longitude));
+
+                    PlatformView.AddAnnotation(marker);
+
+                    MarkerMap.Add(marker, pin);
+                }
+            }
+            if (e.OldItems != null)
+            {
+                foreach (MapPin pin in e.OldItems)
+                {
+                   // figure out how to remove.
                 }
             }
         }
