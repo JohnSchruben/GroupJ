@@ -30,5 +30,11 @@
 	<string>Assets.xcassets/appicon.appiconset</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.GroupJ.SafeSkate-Mobile-IOS</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Can we use your location while SafeSkate is running?</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+	</array>
 </dict>
 </plist>
