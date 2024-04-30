@@ -19,17 +19,21 @@ namespace SafeSkate.Mobile
         public MainPage()
         {
             InitializeComponent();
-            //CheckAndRequestLocationPermission();
-            //GetCurrentLocation();
+
+            map.MapType = MapType.Street;
+            map.IsShowingUser = true;
+            
+            Task.Run(async () =>
+            {
+                await CheckAndRequestLocationPermission();
+                RegisterLocationListener();
+                await GetCurrentLocation();
+            });
 
             this.mainPageViewModel = this.BindingContext as MainPageViewModel;
             this.addMarkerView.BindingContext = this.mainPageViewModel.AddMarkerViewModel;
-
-            Location centerLocation = new Location(35.207554, -97.444606);
-
-            MapSpan mapSpan = MapSpan.FromCenterAndRadius(centerLocation, Distance.FromKilometers(0.5));
-
-            map.MoveToRegion(mapSpan);
+            
+            this.map.MoveToRegion(MapSpan.FromCenterAndRadius(currentLocation, Distance.FromMiles(1)));
 
             addButton.IsVisible = true;
             cancelButton.IsVisible = false;
@@ -40,10 +44,12 @@ namespace SafeSkate.Mobile
         {
             try
             {
-                // will only work for android.
+#if ANDROID
                 var audioPlayer = new SafeSkate.Mobile.Platforms.Android.AudioPlayer();
                 audioPlayer.PlaySound();
-                //DependencyService.Get<IAudioPlayer>().PlaySound();
+#elif IOS
+                DependencyService.Get<IAudioPlayer>().PlaySound();
+#endif
             }
             catch (Exception ex)
             {
@@ -78,25 +84,45 @@ namespace SafeSkate.Mobile
             // var backgroundStatus = await Permissions.RequestAsync<Permissions.LocationAlways>();
         }
 
-        private Location currentLocation;
+        private Location currentLocation = new Location(35.207554, -97.444606);
+
+        public async void RegisterLocationListener()
+        {
+            try
+            {
+                Geolocation.LocationChanged += LocationChangedEventHandler;
+                var request = new GeolocationListeningRequest(GeolocationAccuracy.Medium);
+                await Geolocation.StartListeningForegroundAsync(request);
+            }
+            catch (Exception e)
+            {
+                // Unable to listen for location changes
+            }
+        }
+
+        void LocationChangedEventHandler(object sender, GeolocationLocationChangedEventArgs e)
+        {
+            var location = e.Location;
+            if (this.currentLocation != location)
+            {
+                this.currentLocation = location;
+                this.map.MoveToRegion(MapSpan.FromCenterAndRadius(location, Distance.FromMiles(1)));
+            }
+        }
 
         public async Task<Location> GetCurrentLocation()
         {
             try
             {
-                Thread.Sleep(TimeSpan.FromSeconds(10));
-                var request = new GeolocationRequest(GeolocationAccuracy.Best, TimeSpan.FromSeconds(10));
-                var location = await Geolocation.GetLocationAsync(request);
+                var location = await Geolocation.Default.GetLastKnownLocationAsync();
                 if (location != null)
                 {
                     Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}");
 
-                    if (this.currentLocation == null || this.currentLocation != location)
+                    if (this.currentLocation != location)
                     {
                         this.currentLocation = location;
-                        var newSpan = MapSpan.FromCenterAndRadius(this.currentLocation, Distance.FromKilometers(3)); 
-
-                        this.map.MoveToRegion(newSpan);
+                        this.map.MoveToRegion(MapSpan.FromCenterAndRadius(location, Distance.FromMiles(1)));
                     }
 
                     return GetCurrentLocation().Result;
