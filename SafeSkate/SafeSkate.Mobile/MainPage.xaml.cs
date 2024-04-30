@@ -5,6 +5,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Map = Microsoft.Maui.Controls.Maps.Map;
 
+
+
 namespace SafeSkate.Mobile
 {
     /// <summary>
@@ -39,7 +41,7 @@ namespace SafeSkate.Mobile
             cancelButton.IsVisible = false;
 
             ServiceTypeProvider.Instance.MapMarkerInfoCollectionProxy.MapMarkerInfos.CollectionChanged += this.MapMarkerInfos_CollectionChanged;
-            GetCurrentLocation();
+            Add_Current_Location();
         }
 
         private void PlayAlertSound()
@@ -47,8 +49,7 @@ namespace SafeSkate.Mobile
             try
             {
                 // will only work for android.
-                //var audioPlayer = new SafeSkate.Mobile.Platforms.Android.AudioPlayer();
-                //audioPlayer.PlaySound();
+                 
                 //DependencyService.Get<IAudioPlayer>().PlaySound();
             }
             catch (Exception ex)
@@ -207,7 +208,7 @@ namespace SafeSkate.Mobile
                 //Add marker
                 //Begin updating location
                 await DisplayAlert("User Coordinates", currentLocation.Latitude.ToString() + "," + currentLocation.Longitude.ToString(), "OK");
-                PlayAlertSound();
+                //PlayAlertSound();
                 OnStartListening();
             }
             else
